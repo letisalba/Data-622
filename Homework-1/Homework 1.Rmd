@@ -38,29 +38,54 @@ Explore how to analyze and predict an outcome based on the data available. This 
 
 $~$
 
-### Load Libraries:
+#### Load Libraries:
 Below are the libraries used to complete this assignment
-```{r}
+```{r, warning=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
 library(tidyverse)
+library(skimr)
 #install.packages('rpart.plot') # must install if not already
-library(rpart) #decision tree package rec'd by Practical ML in R textbook
-library(rpart.plot) #decision tree display package rec'd by Practical ML in R textbook
+library(rpart) # decision tree package
+library(rpart.plot) # decision tree display package
+library(lemon)
+library(knitr)
 ```
 
 $~$
 
-### Load Data:
-The data sets are included in my GitHub and read into R
-```{r}
+### The Data:
+The data chosen from Excel BI Analytics were the 100 sales records for the small and 5000 sales records for the large. The data sets are included in my [GitHub](https://github.com/letisalba/Data-622/tree/master/Homework-1/csv) and read into R.
+```{r, loading data, echo = FALSE}
+small_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/100%20Sales%20Records.csv")
+large_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/5000%20Sales%20Records.csv")
+```
 
+**The small data set:**
+```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
+
+kable(head(small_df),caption='Normal `kable` usage.')
+#head(small_df)
+```
+
+$~$
+
+**The large data set:**
+```{r, echo=FALSE}
+kable(head(large_df),caption='Normal `kable` usage.')
+#head(large_df)
 ```
 
 $~$
 
 ### Data Exploration:
 
-```{r}
+Let's explore the data sets; first the `small_df` data set, using the `skimr` library we can obtain quick summary statistics beyond the `summary()`. We notice that we have 14 variables split into 7 character and 7 numeric. There seems to be no missing values, so this will have a simple preparation before we build out model.
+```{r, echo=FALSE}
+skim(small_df)
+```
 
+Now, the `large_df` dataset is composed of 5000 values of the same 14 variables as the `small` data set. It also has 7 character and 7 numeric variables with no missing values.
+```{r, echo=FALSE}
+skim(large_df)
 ```
 
 $~$
@@ -73,7 +98,7 @@ $~$
 
 $~$
 
-### Model Selection:
+### Model Building:
 
 ```{r}
 

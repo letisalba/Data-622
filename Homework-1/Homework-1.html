@@ -1307,6 +1307,102 @@ ul.task-list{list-style: none;}
 
 
 
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } 
+code span.an { color: #008000; } 
+code span.at { } 
+code span.bu { } 
+code span.cf { color: #0000ff; } 
+code span.ch { color: #008080; } 
+code span.cn { } 
+code span.co { color: #008000; } 
+code span.cv { color: #008000; } 
+code span.do { color: #008000; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.im { } 
+code span.in { color: #008000; } 
+code span.kw { color: #0000ff; } 
+code span.op { } 
+code span.ot { color: #ff4000; } 
+code span.pp { color: #ff4000; } 
+code span.sc { color: #008080; } 
+code span.ss { color: #008080; } 
+code span.st { color: #008080; } 
+code span.va { } 
+code span.vs { color: #008080; } 
+code span.wa { color: #008000; font-weight: bold; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -1511,24 +1607,858 @@ compare the results.</li>
 </ol>
 <p><span class="math inline">\(~\)</span></p>
 </div>
-<div id="load-libraries" class="section level3">
-<h3>Load Libraries:</h3>
+<div id="load-libraries" class="section level4">
+<h4>Load Libraries:</h4>
+<p>Below are the libraries used to complete this assignment</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<pre><code>FALSE ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+FALSE ✔ dplyr     1.1.0     ✔ readr     2.1.4
+FALSE ✔ forcats   1.0.0     ✔ stringr   1.5.0
+FALSE ✔ ggplot2   3.4.1     ✔ tibble    3.1.8
+FALSE ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+FALSE ✔ purrr     1.0.1     
+FALSE ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+FALSE ✖ dplyr::filter() masks stats::filter()
+FALSE ✖ dplyr::lag()    masks stats::lag()
+FALSE ℹ Use the ]8;;http://conflicted.r-lib.org/conflicted package]8;; to force all conflicts to become errors</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#install.packages(&#39;rpart.plot&#39;) # must install if not already</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="fu">library</span>(rpart) <span class="co"># decision tree package</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">library</span>(rpart.plot) <span class="co"># decision tree display package</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="fu">library</span>(lemon)</span></code></pre></div>
+<pre><code>FALSE 
+FALSE Attaching package: &#39;lemon&#39;
+FALSE 
+FALSE The following object is masked from &#39;package:purrr&#39;:
+FALSE 
+FALSE     %||%</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code></pre></div>
 <p><span class="math inline">\(~\)</span></p>
 </div>
-<div id="load-data" class="section level3">
-<h3>Load Data:</h3>
+<div id="the-data" class="section level3">
+<h3>The Data:</h3>
+<p>The data chosen from Excel BI Analytics were the 100 sales records
+for the small and 5000 sales records for the large. The data sets are
+included in my <a href="https://github.com/letisalba/Data-622/tree/master/Homework-1/csv">GitHub</a>
+and read into R.</p>
+<p><strong>The small data set:</strong></p>
+<table style="width:100%;">
+<caption>Normal <code>kable</code> usage.</caption>
+<colgroup>
+<col width="16%" />
+<col width="10%" />
+<col width="7%" />
+<col width="6%" />
+<col width="7%" />
+<col width="5%" />
+<col width="4%" />
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="4%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Region</th>
+<th align="left">Country</th>
+<th align="left">Item.Type</th>
+<th align="left">Sales.Channel</th>
+<th align="left">Order.Priority</th>
+<th align="left">Order.Date</th>
+<th align="right">Order.ID</th>
+<th align="left">Ship.Date</th>
+<th align="right">Units.Sold</th>
+<th align="right">Unit.Price</th>
+<th align="right">Unit.Cost</th>
+<th align="right">Total.Revenue</th>
+<th align="right">Total.Cost</th>
+<th align="right">Total.Profit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Australia and Oceania</td>
+<td align="left">Tuvalu</td>
+<td align="left">Baby Food</td>
+<td align="left">Offline</td>
+<td align="left">H</td>
+<td align="left">5/28/2010</td>
+<td align="right">669165933</td>
+<td align="left">6/27/2010</td>
+<td align="right">9925</td>
+<td align="right">255.28</td>
+<td align="right">159.42</td>
+<td align="right">2533654.00</td>
+<td align="right">1582243.50</td>
+<td align="right">951410.50</td>
+</tr>
+<tr class="even">
+<td align="left">Central America and the Caribbean</td>
+<td align="left">Grenada</td>
+<td align="left">Cereal</td>
+<td align="left">Online</td>
+<td align="left">C</td>
+<td align="left">8/22/2012</td>
+<td align="right">963881480</td>
+<td align="left">9/15/2012</td>
+<td align="right">2804</td>
+<td align="right">205.70</td>
+<td align="right">117.11</td>
+<td align="right">576782.80</td>
+<td align="right">328376.44</td>
+<td align="right">248406.36</td>
+</tr>
+<tr class="odd">
+<td align="left">Europe</td>
+<td align="left">Russia</td>
+<td align="left">Office Supplies</td>
+<td align="left">Offline</td>
+<td align="left">L</td>
+<td align="left">5/2/2014</td>
+<td align="right">341417157</td>
+<td align="left">5/8/2014</td>
+<td align="right">1779</td>
+<td align="right">651.21</td>
+<td align="right">524.96</td>
+<td align="right">1158502.59</td>
+<td align="right">933903.84</td>
+<td align="right">224598.75</td>
+</tr>
+<tr class="even">
+<td align="left">Sub-Saharan Africa</td>
+<td align="left">Sao Tome and Principe</td>
+<td align="left">Fruits</td>
+<td align="left">Online</td>
+<td align="left">C</td>
+<td align="left">6/20/2014</td>
+<td align="right">514321792</td>
+<td align="left">7/5/2014</td>
+<td align="right">8102</td>
+<td align="right">9.33</td>
+<td align="right">6.92</td>
+<td align="right">75591.66</td>
+<td align="right">56065.84</td>
+<td align="right">19525.82</td>
+</tr>
+<tr class="odd">
+<td align="left">Sub-Saharan Africa</td>
+<td align="left">Rwanda</td>
+<td align="left">Office Supplies</td>
+<td align="left">Offline</td>
+<td align="left">L</td>
+<td align="left">2/1/2013</td>
+<td align="right">115456712</td>
+<td align="left">2/6/2013</td>
+<td align="right">5062</td>
+<td align="right">651.21</td>
+<td align="right">524.96</td>
+<td align="right">3296425.02</td>
+<td align="right">2657347.52</td>
+<td align="right">639077.50</td>
+</tr>
+<tr class="even">
+<td align="left">Australia and Oceania</td>
+<td align="left">Solomon Islands</td>
+<td align="left">Baby Food</td>
+<td align="left">Online</td>
+<td align="left">C</td>
+<td align="left">2/4/2015</td>
+<td align="right">547995746</td>
+<td align="left">2/21/2015</td>
+<td align="right">2974</td>
+<td align="right">255.28</td>
+<td align="right">159.42</td>
+<td align="right">759202.72</td>
+<td align="right">474115.08</td>
+<td align="right">285087.64</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(~\)</span></p>
+<p><strong>The large data set:</strong></p>
+<table>
+<caption>Normal <code>kable</code> usage.</caption>
+<colgroup>
+<col width="17%" />
+<col width="10%" />
+<col width="7%" />
+<col width="7%" />
+<col width="7%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="7%" />
+<col width="5%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Region</th>
+<th align="left">Country</th>
+<th align="left">Item.Type</th>
+<th align="left">Sales.Channel</th>
+<th align="left">Order.Priority</th>
+<th align="left">Order.Date</th>
+<th align="right">Order.ID</th>
+<th align="left">Ship.Date</th>
+<th align="right">Units.Sold</th>
+<th align="right">Unit.Price</th>
+<th align="right">Unit.Cost</th>
+<th align="right">Total.Revenue</th>
+<th align="right">Total.Cost</th>
+<th align="right">Total.Profit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Central America and the Caribbean</td>
+<td align="left">Antigua and Barbuda</td>
+<td align="left">Baby Food</td>
+<td align="left">Online</td>
+<td align="left">M</td>
+<td align="left">12/20/2013</td>
+<td align="right">957081544</td>
+<td align="left">1/11/2014</td>
+<td align="right">552</td>
+<td align="right">255.28</td>
+<td align="right">159.42</td>
+<td align="right">140914.56</td>
+<td align="right">87999.84</td>
+<td align="right">52914.72</td>
+</tr>
+<tr class="even">
+<td align="left">Central America and the Caribbean</td>
+<td align="left">Panama</td>
+<td align="left">Snacks</td>
+<td align="left">Offline</td>
+<td align="left">C</td>
+<td align="left">7/5/2010</td>
+<td align="right">301644504</td>
+<td align="left">7/26/2010</td>
+<td align="right">2167</td>
+<td align="right">152.58</td>
+<td align="right">97.44</td>
+<td align="right">330640.86</td>
+<td align="right">211152.48</td>
+<td align="right">119488.38</td>
+</tr>
+<tr class="odd">
+<td align="left">Europe</td>
+<td align="left">Czech Republic</td>
+<td align="left">Beverages</td>
+<td align="left">Offline</td>
+<td align="left">C</td>
+<td align="left">9/12/2011</td>
+<td align="right">478051030</td>
+<td align="left">9/29/2011</td>
+<td align="right">4778</td>
+<td align="right">47.45</td>
+<td align="right">31.79</td>
+<td align="right">226716.10</td>
+<td align="right">151892.62</td>
+<td align="right">74823.48</td>
+</tr>
+<tr class="even">
+<td align="left">Asia</td>
+<td align="left">North Korea</td>
+<td align="left">Cereal</td>
+<td align="left">Offline</td>
+<td align="left">L</td>
+<td align="left">5/13/2010</td>
+<td align="right">892599952</td>
+<td align="left">6/15/2010</td>
+<td align="right">9016</td>
+<td align="right">205.70</td>
+<td align="right">117.11</td>
+<td align="right">1854591.20</td>
+<td align="right">1055863.76</td>
+<td align="right">798727.44</td>
+</tr>
+<tr class="odd">
+<td align="left">Asia</td>
+<td align="left">Sri Lanka</td>
+<td align="left">Snacks</td>
+<td align="left">Offline</td>
+<td align="left">C</td>
+<td align="left">7/20/2015</td>
+<td align="right">571902596</td>
+<td align="left">7/27/2015</td>
+<td align="right">7542</td>
+<td align="right">152.58</td>
+<td align="right">97.44</td>
+<td align="right">1150758.36</td>
+<td align="right">734892.48</td>
+<td align="right">415865.88</td>
+</tr>
+<tr class="even">
+<td align="left">Middle East and North Africa</td>
+<td align="left">Morocco</td>
+<td align="left">Personal Care</td>
+<td align="left">Offline</td>
+<td align="left">L</td>
+<td align="left">11/8/2010</td>
+<td align="right">412882792</td>
+<td align="left">11/22/2010</td>
+<td align="right">48</td>
+<td align="right">81.73</td>
+<td align="right">56.67</td>
+<td align="right">3923.04</td>
+<td align="right">2720.16</td>
+<td align="right">1202.88</td>
+</tr>
+</tbody>
+</table>
 <p><span class="math inline">\(~\)</span></p>
 </div>
 <div id="data-exploration" class="section level3">
 <h3>Data Exploration:</h3>
+<p>Let’s explore the data sets; first the <code>small_df</code> data
+set, using the <code>skimr</code> library we can obtain quick summary
+statistics beyond the <code>summary()</code>. We notice that we have 14
+variables split into 7 character and 7 numeric. There seems to be no
+missing values, so this will have a simple preparation before we build
+out model.</p>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">small_df</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">100</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">14</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">7</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">7</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="20%" />
+<col width="13%" />
+<col width="19%" />
+<col width="5%" />
+<col width="5%" />
+<col width="8%" />
+<col width="12%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Region</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">33</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Country</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">32</td>
+<td align="right">0</td>
+<td align="right">76</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Item.Type</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">15</td>
+<td align="right">0</td>
+<td align="right">12</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Sales.Channel</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Order.Priority</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Order.Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">100</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Ship.Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">99</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="10%" />
+<col width="7%" />
+<col width="10%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Order.ID</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">555020412.36</td>
+<td align="right">260615257.13</td>
+<td align="right">114606559.00</td>
+<td align="right">338922488.00</td>
+<td align="right">557708561.00</td>
+<td align="right">790755080.75</td>
+<td align="right">994022214.00</td>
+<td align="left">▇▆▆▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">Units.Sold</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5128.71</td>
+<td align="right">2794.48</td>
+<td align="right">124.00</td>
+<td align="right">2836.25</td>
+<td align="right">5382.50</td>
+<td align="right">7369.00</td>
+<td align="right">9925.00</td>
+<td align="left">▆▆▇▆▆</td>
+</tr>
+<tr class="odd">
+<td align="left">Unit.Price</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">276.76</td>
+<td align="right">235.59</td>
+<td align="right">9.33</td>
+<td align="right">81.73</td>
+<td align="right">179.88</td>
+<td align="right">437.20</td>
+<td align="right">668.27</td>
+<td align="left">▇▅▁▃▅</td>
+</tr>
+<tr class="even">
+<td align="left">Unit.Cost</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">191.05</td>
+<td align="right">188.21</td>
+<td align="right">6.92</td>
+<td align="right">35.84</td>
+<td align="right">107.28</td>
+<td align="right">263.33</td>
+<td align="right">524.96</td>
+<td align="left">▇▂▂▁▃</td>
+</tr>
+<tr class="odd">
+<td align="left">Total.Revenue</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1373487.68</td>
+<td align="right">1460028.71</td>
+<td align="right">4870.26</td>
+<td align="right">268721.21</td>
+<td align="right">752314.36</td>
+<td align="right">2212044.68</td>
+<td align="right">5997054.98</td>
+<td align="left">▇▂▂▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Total.Cost</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">931805.70</td>
+<td align="right">1083938.25</td>
+<td align="right">3612.24</td>
+<td align="right">168868.03</td>
+<td align="right">363566.38</td>
+<td align="right">1613869.72</td>
+<td align="right">4509793.96</td>
+<td align="left">▇▁▂▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Total.Profit</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">441681.98</td>
+<td align="right">438537.91</td>
+<td align="right">1258.02</td>
+<td align="right">121443.58</td>
+<td align="right">290768.00</td>
+<td align="right">635828.80</td>
+<td align="right">1719922.04</td>
+<td align="left">▇▃▂▁▁</td>
+</tr>
+</tbody>
+</table>
+<p>Now, the <code>large_df</code> dataset is composed of 5000 values of
+the same 14 variables as the <code>small</code> data set. It also has 7
+character and 7 numeric variables with no missing values.</p>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">large_df</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">5000</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">14</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">7</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">7</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="20%" />
+<col width="13%" />
+<col width="19%" />
+<col width="5%" />
+<col width="5%" />
+<col width="8%" />
+<col width="12%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Region</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">33</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Country</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">32</td>
+<td align="right">0</td>
+<td align="right">185</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Item.Type</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">15</td>
+<td align="right">0</td>
+<td align="right">12</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Sales.Channel</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">6</td>
+<td align="right">7</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Order.Priority</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">Order.Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">2305</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">Ship.Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">2320</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="10%" />
+<col width="7%" />
+<col width="10%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="9%" />
+<col width="4%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Order.ID</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">548644737.22</td>
+<td align="right">259467108.85</td>
+<td align="right">100090873.00</td>
+<td align="right">320104216.75</td>
+<td align="right">552314960.50</td>
+<td align="right">768770944.50</td>
+<td align="right">999879729.00</td>
+<td align="left">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">Units.Sold</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">5030.70</td>
+<td align="right">2914.52</td>
+<td align="right">2.00</td>
+<td align="right">2453.00</td>
+<td align="right">5123.00</td>
+<td align="right">7576.25</td>
+<td align="right">9999.00</td>
+<td align="left">▇▇▇▇▇</td>
+</tr>
+<tr class="odd">
+<td align="left">Unit.Price</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">265.75</td>
+<td align="right">218.72</td>
+<td align="right">9.33</td>
+<td align="right">81.73</td>
+<td align="right">154.06</td>
+<td align="right">437.20</td>
+<td align="right">668.27</td>
+<td align="left">▇▇▁▃▃</td>
+</tr>
+<tr class="even">
+<td align="left">Unit.Cost</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">187.49</td>
+<td align="right">176.42</td>
+<td align="right">6.92</td>
+<td align="right">35.84</td>
+<td align="right">97.44</td>
+<td align="right">263.33</td>
+<td align="right">524.96</td>
+<td align="left">▇▂▂▁▃</td>
+</tr>
+<tr class="odd">
+<td align="left">Total.Revenue</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">1325737.84</td>
+<td align="right">1475374.67</td>
+<td align="right">65.31</td>
+<td align="right">257416.82</td>
+<td align="right">779409.46</td>
+<td align="right">1839975.10</td>
+<td align="right">6672675.95</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">Total.Cost</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">933093.20</td>
+<td align="right">1150873.22</td>
+<td align="right">48.44</td>
+<td align="right">154748.02</td>
+<td align="right">468180.67</td>
+<td align="right">1189577.71</td>
+<td align="right">5248025.12</td>
+<td align="left">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">Total.Profit</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">392644.65</td>
+<td align="right">382935.15</td>
+<td align="right">16.87</td>
+<td align="right">85339.25</td>
+<td align="right">279095.18</td>
+<td align="right">565106.42</td>
+<td align="right">1726007.49</td>
+<td align="left">▇▃▂▁▁</td>
+</tr>
+</tbody>
+</table>
 <p><span class="math inline">\(~\)</span></p>
 </div>
 <div id="data-preparation" class="section level3">
 <h3>Data Preparation:</h3>
 <p><span class="math inline">\(~\)</span></p>
 </div>
-<div id="model-selection" class="section level3">
-<h3>Model Selection:</h3>
+<div id="model-building" class="section level3">
+<h3>Model Building:</h3>
 <p><span class="math inline">\(~\)</span></p>
 </div>
 <div id="conclusion" class="section level3">
