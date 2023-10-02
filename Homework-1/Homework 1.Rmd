@@ -41,7 +41,7 @@ $~$
 #### Load Libraries:
 Below are the libraries used to complete this assignment
 ```{r, warning=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
-library(tidyverse)
+#library(tidyverse)
 library(skimr)
 #install.packages('rpart.plot') # must install if not already
 library(rpart) # decision tree package
@@ -88,21 +88,166 @@ Now, the `large_df` dataset is composed of 5000 values of the same 14 variables 
 skim(large_df)
 ```
 
+```{r}
+# Load the library
+library(tidymodels)
+library(tidyr)
+```
+
+
 $~$
 
 ### Data Preparation:
 
-```{r}
+Before we build our model, I first converted some columns into `as.factor` and the two columns containing dates `as.Date`. Below are the results.
+```{r, echo=FALSE}
+# small data set 
+small_df$Region <- as.factor(small_df$Region)
+small_df$Country <- as.factor(small_df$Country)
+small_df$Item.Type <- as.factor(small_df$Item.Type)
+small_df$Sales.Channel <- as.factor(small_df$Sales.Channel)
+small_df$Order.Priority <- as.factor(small_df$Order.Priority)
+small_df$Order.Date <- as.Date(small_df$Order.Date, "%m/%d/%Y")
+small_df$Ship.Date <- as.Date(small_df$Ship.Date, "%m/%d/%Y")
 
+# large data set
+large_df$Region <- as.factor(large_df$Region)
+large_df$Country <- as.factor(large_df$Country)
+large_df$Item.Type <- as.factor(large_df$Item.Type)
+large_df$Sales.Channel <- as.factor(large_df$Sales.Channel)
+large_df$Order.Priority <- as.factor(large_df$Order.Priority)
+large_df$Order.Date <- as.Date(large_df$Order.Date, "%m/%d/%Y")
+large_df$Ship.Date <- as.Date(large_df$Ship.Date, "%m/%d/%Y")
 ```
+
+**Small dataset:**
+```{r, echo=FALSE}
+kable(head(small_df),caption='Normal `kable` usage.')
+```
+
+$~$
+
+**Large dataset:**
+```{r, echo=FALSE}
+kable(head(large_df),caption='Normal `kable` usage.')
+```
+
+```{r}
+# # Prepare the dataset for ggplot2
+# small_df <- small_df %>%
+#   pivot_longer(cols = c(Region, Country, Item.Type, Sales.Channel, Order.Priority, Order.Date, Order.ID, Ship.Date, Units.Sold, Unit.Price, Unit.Cost, Total.Revenue, Total.Cost, Total.Profit), 
+#                names_to = "Names", 
+#                values_to = "Values")
+# 
+#  #pivot_longer(cols = c(Region, Country, Item.Type, Sales.Channel, Order.Priority, Order.Date, Order.ID, Ship.Date, Units.Sold, Unit.Price, Unit.Cost, Total.Revenue, Total.Cost, Total.Profit)#everything(),
+#               #names_to = "variable",
+#               #values_to = "value")
+# 
+# # Create a histogram for all numeric variables in one plot
+# small_df_histograms <- ggplot(small_df, aes(x = value)) +
+#  geom_histogram(bins = 30, color = "black", fill = "lightblue") +
+#  facet_wrap(~variable, scales = "free", ncol = 4) +
+#  labs(title = "Histograms of Small Dataset",
+#       x = "Value",
+#       y = "Frequency") +
+#  theme_minimal()
+# 
+# # Plot the histograms
+# print(small_df_histograms)
+```
+```{r}
+# Split the data into training and testing sets
+
+set.seed(123)
+
+# small data set
+small_df_split <- initial_split(small_df, prop = 0.75)
+small_train <- training(small_df_split)
+small_test <- testing(small_df_split)
+
+# large data set
+large_df_split <- initial_split(large_df, prop = 0.75)
+large_train <- training(large_df_split)
+large_test <- testing(large_df_split)
+```
+
 
 $~$
 
 ### Model Building:
 
-```{r}
+I've selected to create decision trees for both datasets and predict the order
 
+```{r}
+# Create a decision tree model specification for small data set
+tree_spec_small <- decision_tree() %>%
+ set_engine("rpart") %>%
+ set_mode("regression")
+
+# Fit the model to the training data
+tree_fit_small <- tree_spec_small %>%
+ fit(Units.Sold ~ ., data = small_train)
+
+# Create a decision tree model specification for large data set
+tree_spec_large <- decision_tree() %>%
+ set_engine("rpart") %>%
+ set_mode("regression")
+
+# Fit the model to the training data
+tree_fit_large <- tree_spec_large %>%
+ fit(Units.Sold ~ ., data = large_train)
 ```
+
+
+```{r}
+# Make predictions on the testing data for the small data set
+small_predictions <- tree_fit_small %>%
+ predict(small_test) %>%
+ pull(.pred)
+
+# Calculate RMSE and R-squared for the small data set
+small_metrics <- metric_set(rmse, rsq)
+small_model_performance <- small_test %>%
+ mutate(small_predictions = small_predictions) %>%
+ small_metrics(truth = Units.Sold, estimate = small_predictions)
+
+print(small_model_performance)
+
+# Make predictions on the testing data for the large data set
+large_predictions <- tree_fit_large %>%
+ predict(large_test) %>%
+ pull(.pred)
+
+# Calculate RMSE and R-squared for the large data set
+large_metrics <- metric_set(rmse, rsq)
+large_model_performance <- large_test %>%
+ mutate(large_predictions = large_predictions) %>%
+ large_metrics(truth = Units.Sold, estimate = large_predictions)
+
+print(large_model_performance)
+```
+
+```{r}
+# Plot the decision tree for small data set
+rpart.plot(tree_fit_small$fit, type = 4, extra = 101, under = TRUE, cex = 0.8, box.palette = "auto")
+```
+
+
+```{r}
+# Plot the decision tree for large data set
+rpart.plot(tree_fit_large$fit, type = 4, extra = 101, under = TRUE, cex = 0.8, box.palette = "auto")
+```
+
+```{r}
+rules_small <- rpart.rules(tree_fit_small$fit)
+print(rules_small)
+```
+
+```{r}
+rules_large <- rpart.rules(tree_fit_large$fit)
+print(rules_large)
+```
+
 
 $~$
 
