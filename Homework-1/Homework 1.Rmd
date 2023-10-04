@@ -48,6 +48,8 @@ library(rpart) # decision tree package
 library(rpart.plot) # decision tree display package
 library(lemon)
 library(knitr)
+library(tidymodels)
+library(tidyr)
 ```
 
 $~$
@@ -56,16 +58,15 @@ $~$
 The data chosen from Excel BI Analytics were the 100 sales records for the small and 5000 sales records for the large. The data sets are included in my [GitHub](https://github.com/letisalba/Data-622/tree/master/Homework-1/csv) and read into R.
 ```{r, loading data, echo = FALSE}
 small_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/100%20Sales%20Records.csv")
-#small_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/1000%20Sales%20Records.csv")
+# small_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/1000%20Sales%20Records.csv")
 large_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/5000%20Sales%20Records.csv")
-#large_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/10000%20Sales%20Records.csv")
+# large_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/10000%20Sales%20Records.csv")
 ```
 
 **The small data set:**
 ```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
-
 kable(head(small_df),caption='Normal `kable` usage.')
-#head(small_df)
+head(small_df)
 ```
 
 $~$
@@ -73,7 +74,7 @@ $~$
 **The large data set:**
 ```{r, echo=FALSE}
 kable(head(large_df),caption='Normal `kable` usage.')
-#head(large_df)
+head(large_df)
 ```
 
 $~$
@@ -90,12 +91,6 @@ Now, the `large_df` dataset is composed of 5000 values of the same 14 variables 
 skim(large_df)
 ```
 
-```{r}
-# Load the library
-library(tidymodels)
-library(tidyr)
-```
-
 
 $~$
 
@@ -103,7 +98,7 @@ $~$
 
 Before we build our model, I first converted some columns into `as.factor` and the two columns containing dates `as.Date`. Below are the results.
 ```{r, echo=FALSE}
-# small data set 
+# small data set
 small_df$Region <- as.factor(small_df$Region)
 small_df$Country <- as.factor(small_df$Country)
 small_df$Item.Type <- as.factor(small_df$Item.Type)
@@ -120,6 +115,24 @@ large_df$Sales.Channel <- as.factor(large_df$Sales.Channel)
 large_df$Order.Priority <- as.factor(large_df$Order.Priority)
 large_df$Order.Date <- as.Date(large_df$Order.Date, "%m/%d/%Y")
 large_df$Ship.Date <- as.Date(large_df$Ship.Date, "%m/%d/%Y")
+
+# # small data set 2
+# small_df2$Region <- as.factor(small_df2$Region)
+# small_df2$Country <- as.factor(small_df2$Country)
+# small_df2$Item.Type <- as.factor(small_df2$Item.Type)
+# small_df2$Sales.Channel <- as.factor(small_df2$Sales.Channel)
+# small_df2$Order.Priority <- as.factor(small_df2$Order.Priority)
+# small_df2$Order.Date <- as.Date(small_df2$Order.Date, "%m/%d/%Y")
+# small_df2$Ship.Date <- as.Date(small_df2$Ship.Date, "%m/%d/%Y")
+# 
+# # large data set 2
+# large_df2$Region <- as.factor(large_df2$Region)
+# large_df2$Country <- as.factor(large_df2$Country)
+# large_df2$Item.Type <- as.factor(large_df2$Item.Type)
+# large_df2$Sales.Channel <- as.factor(large_df2$Sales.Channel)
+# large_df2$Order.Priority <- as.factor(large_df2$Order.Priority)
+# large_df2$Order.Date <- as.Date(large_df2$Order.Date, "%m/%d/%Y")
+# large_df2$Ship.Date <- as.Date(large_df2$Ship.Date, "%m/%d/%Y")
 ```
 
 **Small dataset:**
@@ -173,6 +186,18 @@ small_test <- testing(small_df_split)
 large_df_split <- initial_split(large_df, prop = 0.75)
 large_train <- training(large_df_split)
 large_test <- testing(large_df_split)
+
+# set.seed(213)
+# 
+# # small data set
+# small_df2_split <- initial_split(small_df2, prop = 0.75)
+# small_train2 <- training(small_df2_split)
+# small_test2 <- testing(small_df2_split)
+# 
+# # large data set
+# large_df2_split <- initial_split(large_df2, prop = 0.75)
+# large_train2 <- training(large_df2_split)
+# large_test2 <- testing(large_df2_split)
 ```
 
 
@@ -183,7 +208,9 @@ $~$
 I've selected to create decision trees for both datasets and predict the order
 
 ```{r}
-small_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = small_train)
+small_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + 
+                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , 
+                        method = "class", data = small_train)
 
 prp(small_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
 ```
@@ -199,9 +226,36 @@ sum(diag(small_df_prediction)) / nrow(small_test)
 ```
 
 
+```{r}
+# small_df2_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = small_train2)
+# 
+# prp(small_df2_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
 
 ```{r}
-large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = large_train)
+# small_df2_prediction <- predict(small_df2_model, small_test2, type = "class")
+# small_df2_prediction <- table(small_test2$Order.Priority, small_df2_prediction)
+# small_df2_prediction
+```
+
+```{r}
+# sum(diag(small_df2_prediction)) / nrow(small_test2)
+```
+
+```{r}
+large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + 
+                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit,
+                        method = "class", data = large_train)
+
+prp(large_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
+
+
+```{r}
+large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + 
+                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit, 
+                        method = "class", data = large_train, 
+                        control=rpart.control(minsplit=2, minbucket=3, cp=0.0015))
 
 prp(large_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
 ```
@@ -216,6 +270,30 @@ large_df_prediction
 ```{r}
 sum(diag(large_df_prediction)) / nrow(large_test)
 ```
+
+
+
+```{r}
+# large_df2_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = large_train2)
+# 
+# prp(large_df2_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+
+# large_df2_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = large_train2, control=rpart.control(minsplit=2, minbucket=1, cp=0.001))
+# 
+# prp(large_df2_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
+
+```{r}
+# large_df2_prediction <- predict(large_df2_model, large_test2, type = "class")
+# large_df2_prediction <- table(large_test2$Order.Priority, large_df2_prediction)
+# large_df2_prediction
+```
+
+```{r}
+# sum(diag(large_df2_prediction)) / nrow(large_test2)
+```
+
+
 
 ```{r, datacamp code2, echo=FALSE}
 # # Create a decision tree model specification for small data set
