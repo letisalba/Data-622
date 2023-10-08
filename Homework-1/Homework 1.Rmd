@@ -6,14 +6,12 @@ output:
   html_document:
     theme: sandstone
     highlight: haddock
-    toc: yes
-    toc_float: yes
   pdf_document:
     dev: cairo_pdf
     toc: yes
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, out.width="50%"}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 $~$
@@ -30,51 +28,68 @@ Based on your computer's capabilities (memory, CPU), select 2 files you can hand
 6. Think about how to analyze and predict an outcome based on the datasets available
 7. Based on the data you have, think which two machine learning algorithms presented so far could be used to analyze the data
 
-#### Deliverable
-1. Essay (minimum 500 word document) Write a short essay explaining your selection of algorithms and how they relate to the data and what you are trying to do
-2. Exploratory Analysis using R or Python (submit code + errors + analysis as notebook or copy/paste to document)
-Explore how to analyze and predict an outcome based on the data available. This will be an exploratory exercise, so feel free to show errors and warnings that raise during the analysis. Test the code with both datasets selected and compare the results.
-
-
 $~$
 
 #### Load Libraries:
 Below are the libraries used to complete this assignment
-```{r, warning=FALSE, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
-#library(tidyverse)
-library(skimr)
+```{r, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE, warning=FALSE} 
+library(tidyverse) # data prep
+library(skimr) # data prep
 #install.packages('rpart.plot') # must install if not already
 library(rpart) # decision tree package
 library(rpart.plot) # decision tree display package
-library(lemon)
-library(knitr)
-library(tidymodels)
-library(tidyr)
+library(knitr) # kable function for table
+library(tidyr) # splitting data
+library(ggplot2) # graphing
+library(hrbrthemes) # chart customization
+library(gridExtra) # layering charts
+library(stringr) # data prep
+```
+
+$~$
+
+#### Load Data:
+The data chosen from Excel BI Analytics were the 100 sales records for the small and 5000 sales records for the large. The data sets are included in my [GitHub](https://github.com/letisalba/Data-622/tree/master/Homework-1/csv) and read into R.
+```{r, loading data, echo = FALSE}
+small_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/100%20Sales%20Records.csv")
+large_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/5000%20Sales%20Records.csv")
+# small_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/1000%20Sales%20Records.csv")
+# large_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/10000%20Sales%20Records.csv")
 ```
 
 $~$
 
 ### The Data:
-The data chosen from Excel BI Analytics were the 100 sales records for the small and 5000 sales records for the large. The data sets are included in my [GitHub](https://github.com/letisalba/Data-622/tree/master/Homework-1/csv) and read into R.
-```{r, loading data, echo = FALSE}
-small_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/100%20Sales%20Records.csv")
-# small_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/1000%20Sales%20Records.csv")
-large_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/5000%20Sales%20Records.csv")
-# large_df2 <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-1/csv/10000%20Sales%20Records.csv")
-```
+
+Both of these data sets contain the same columns with the minor difference of the total of records. The columns are as follows:
+
+* Region:region of sale
+* Country: country of sale
+* Item Type: item sold
+* Sales Channel: online or offline sale
+* Order Priority: priority of the order "L"- Low, "M"- Medium, "H"- High, "C"- Critical
+* Order Date: date of the order
+* Order ID: ID of the order
+* Ship Date: date the order was shipped 
+* Units Sold: amount of units sold
+* Unit Cost: cost of the order 
+* Total Revenue: total revenue of the order
+* Total Cost: total cost of the order
+* Total Profit: total profit of the order
+
 
 **The small data set:**
 ```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
-kable(head(small_df),caption='Normal `kable` usage.')
-head(small_df)
+kable(head(small_df), align = "l", table.attr = "style='width:30%;'")
+#head(small_df)
 ```
 
 $~$
 
 **The large data set:**
 ```{r, echo=FALSE}
-kable(head(large_df),caption='Normal `kable` usage.')
-head(large_df)
+kable(head(large_df), align = "l", table.attr = "style='width:10%;'")
+#head(large_df)
 ```
 
 $~$
@@ -85,10 +100,253 @@ Let's explore the data sets; first the `small_df` data set, using the `skimr` li
 ```{r, echo=FALSE}
 skim(small_df)
 ```
+$~$
+
+##### Let's take a look at the distributions of the numeric variables for the small data set:
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE}
+# histogram for units sold of small dataset
+p1 <- small_df %>% 
+ggplot( aes(x=Units.Sold)) +
+    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+    ggtitle("Small_df Units Sold Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for unit price of small dataset
+p2 <- small_df %>% 
+ggplot( aes(x=Unit.Price)) +
+    geom_histogram(fill="#69a0b3", color="#e9ecef", alpha=0.8) +
+    ggtitle("Small_df Unit Price Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for unit cost of small dataset
+p3 <- small_df %>% 
+ggplot( aes(x=Unit.Cost)) +
+    geom_histogram(fill="#696fb3", color="#e9ecef", alpha=0.8) +
+    ggtitle("Small_df Unit Cost Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for Total Revenue of small dataset
+p4 <- small_df %>% 
+ggplot( aes(x=Total.Revenue)) +
+    geom_histogram(fill="#b369ae", color="#e9ecef", alpha=0.8) +
+    ggtitle("Small_df Total Revenue Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for Total Cost of small dataset
+p5 <- small_df %>% 
+ggplot( aes(x=Total.Cost)) +
+    geom_histogram(fill="#77b369", color="#e9ecef", alpha=0.8) +
+    ggtitle("Small_df Total Cost Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for Total Profit of small dataset
+p6 <- small_df %>% 
+ggplot( aes(x=Total.Profit)) +
+    geom_histogram(fill="#b37e69", color="#e9ecef", alpha=0.8) +
+    ggtitle("Small_df Total Profit Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# plotting the histograms
+par(mfrow = c(3, 3))
+grid.arrange(p1,p2,p3,p4,p5,p6)
+```
+
+##### Categorical variables visualization:
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE}
+# bar charts for the categorical variables
+
+# Region Bar chart
+p7 <- small_df %>%
+  ggplot(aes(x=Region)) +
+  geom_bar(fill="#69b3a2") +
+  coord_flip() +
+  ggtitle("Region Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15)
+    )
+
+# Item Type Bar chart
+p8 <- small_df %>% 
+  ggplot(aes(x=Item.Type)) +
+  geom_bar(fill="#69a0b3") +
+  ggtitle("Item Type Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15), 
+      axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)
+    )
+
+# Sales Channel Bar chart  
+p9 <- small_df %>% 
+  ggplot(aes(x=Sales.Channel)) +
+  geom_bar(fill="#696fb3") +
+  ggtitle("Sales Channel Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15)
+    )
+
+# Order Priority Bar chart  
+p10 <- small_df %>% 
+  ggplot(aes(x=Order.Priority)) +
+  geom_bar(fill="#b369ae") +
+  scale_x_discrete(labels=c('Critical', 'High', 'Low', 'Medium')) +
+  ggtitle("Order Priority Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15)
+    )
+  
+# plotting the bar charts
+par(mfrow = c(3, 3))
+grid.arrange(p7,p8,p9,p10)
+```
+
+$~$
 
 Now, the `large_df` dataset is composed of 5000 values of the same 14 variables as the `small` data set. It also has 7 character and 7 numeric variables with no missing values.
 ```{r, echo=FALSE}
 skim(large_df)
+```
+$~$
+
+##### and also the numeric variable distributions of the large dataset:
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE}
+# histogram for units sold of small dataset
+p11 <- large_df %>% 
+ggplot( aes(x=Units.Sold)) +
+    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+    ggtitle("Large Dataset Units Sold Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for unit price of small dataset
+p12 <- large_df %>% 
+ggplot( aes(x=Unit.Price)) +
+    geom_histogram(fill="#69a0b3", color="#e9ecef", alpha=0.8) +
+    ggtitle("Large Dataset Unit Price Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for unit cost of small dataset
+p13 <- large_df %>% 
+ggplot( aes(x=Unit.Cost)) +
+    geom_histogram(fill="#696fb3", color="#e9ecef", alpha=0.8) +
+    ggtitle("Large Dataset Unit Cost Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for Total Revenue of small dataset
+p14 <- large_df %>% 
+ggplot( aes(x=Total.Revenue)) +
+    geom_histogram(fill="#b369ae", color="#e9ecef", alpha=0.8) +
+    ggtitle("Large Dataset Total Revenue Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for Total Cost of small dataset
+p15 <- large_df %>% 
+ggplot( aes(x=Total.Cost)) +
+    geom_histogram(fill="#77b369", color="#e9ecef", alpha=0.8) +
+    ggtitle("Large Dataset Total Cost Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for Total Profit of small dataset
+p16 <- large_df %>% 
+ggplot( aes(x=Total.Profit)) +
+    geom_histogram(fill="#b37e69", color="#e9ecef", alpha=0.8) +
+    ggtitle("Large Dataset Total Profit Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# plotting the histograms
+par(mfrow = c(3, 3))
+grid.arrange(p11,p12,p13,p14,p15,p16)
+```
+
+$~$
+
+##### Now let's look at the categorical variables:
+
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE}
+# Region Barchart
+p17 <- large_df %>% 
+  ggplot(aes(x=Region)) +
+  geom_bar(fill="#69b3a2") +
+  coord_flip() +
+  ggtitle("Region Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15)
+    )
+
+# Item Type Barchart
+p18 <- large_df %>% 
+  ggplot(aes(x=Item.Type)) +
+  geom_bar(fill="#696fb3") +
+  ggtitle("Item Type Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15), 
+      axis.text.x = element_text(angle = 45, vjust = 0.5, hjust=1)
+    )
+
+# Sales Channel Barchart  
+p19 <- large_df %>% 
+  ggplot(aes(x=Sales.Channel)) +
+  geom_bar(fill="#b369ae") +
+  ggtitle("Sales Channel Bar Chart") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15)
+    )
+
+# Order Priority Barchart  
+p20 <- large_df %>% 
+  ggplot(aes(x=Order.Priority)) +
+  geom_bar(fill="#77b369") +
+  ggtitle("Order Priority Bar Chart") +
+  scale_x_discrete(labels=c('Critical', 'High', 'Low', 'Medium')) +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size = 15)
+    )
+  
+# plotting the bar charts
+par(mfrow = c(3, 2))
+grid.arrange(p17,p18,p19,p20)
 ```
 
 
@@ -96,7 +354,7 @@ $~$
 
 ### Data Preparation:
 
-Before we build our model, I first converted some columns into `as.factor` and the two columns containing dates `as.Date`. Below are the results.
+Now that I've visualized the data it's time to make some changes to the variables. First, convert the categorical values into `as.factor` and convert the two columns containing dates to `as.Date` to be able to manipulate. I'll drop the `Order.ID` column as it is not needed with our model. Below are the results:
 ```{r, echo=FALSE}
 # small data set
 small_df$Region <- as.factor(small_df$Region)
@@ -106,6 +364,7 @@ small_df$Sales.Channel <- as.factor(small_df$Sales.Channel)
 small_df$Order.Priority <- as.factor(small_df$Order.Priority)
 small_df$Order.Date <- as.Date(small_df$Order.Date, "%m/%d/%Y")
 small_df$Ship.Date <- as.Date(small_df$Ship.Date, "%m/%d/%Y")
+small_df <- small_df[,-c(7)]
 
 # large data set
 large_df$Region <- as.factor(large_df$Region)
@@ -115,25 +374,10 @@ large_df$Sales.Channel <- as.factor(large_df$Sales.Channel)
 large_df$Order.Priority <- as.factor(large_df$Order.Priority)
 large_df$Order.Date <- as.Date(large_df$Order.Date, "%m/%d/%Y")
 large_df$Ship.Date <- as.Date(large_df$Ship.Date, "%m/%d/%Y")
-
-# # small data set 2
-# small_df2$Region <- as.factor(small_df2$Region)
-# small_df2$Country <- as.factor(small_df2$Country)
-# small_df2$Item.Type <- as.factor(small_df2$Item.Type)
-# small_df2$Sales.Channel <- as.factor(small_df2$Sales.Channel)
-# small_df2$Order.Priority <- as.factor(small_df2$Order.Priority)
-# small_df2$Order.Date <- as.Date(small_df2$Order.Date, "%m/%d/%Y")
-# small_df2$Ship.Date <- as.Date(small_df2$Ship.Date, "%m/%d/%Y")
-# 
-# # large data set 2
-# large_df2$Region <- as.factor(large_df2$Region)
-# large_df2$Country <- as.factor(large_df2$Country)
-# large_df2$Item.Type <- as.factor(large_df2$Item.Type)
-# large_df2$Sales.Channel <- as.factor(large_df2$Sales.Channel)
-# large_df2$Order.Priority <- as.factor(large_df2$Order.Priority)
-# large_df2$Order.Date <- as.Date(large_df2$Order.Date, "%m/%d/%Y")
-# large_df2$Ship.Date <- as.Date(large_df2$Ship.Date, "%m/%d/%Y")
+large_df <- large_df[,-c(7)]
 ```
+
+$~$
 
 **Small dataset:**
 ```{r, echo=FALSE}
@@ -146,6 +390,138 @@ $~$
 ```{r, echo=FALSE}
 kable(head(large_df),caption='Normal `kable` usage.')
 ```
+
+$~$
+
+### Model Selection:
+
+While exploring the data I've noticed that my data doesn't have labels by default but more so can be defined based on the analysis being performed. There are two labels I can visualize `Order.Priority` or `Total.Profit`. With `Order.Priority` as my target variable I can predict which category a new sale would fall into "C", "H", "L", or "M".  Variables such as `Item.Type`, `Units.Sold` and `Total.Cost` can affect the level in priority of a new sale. With `Total.Profit` as my target variable I can consider all the other variables to see how it affects sales profits.
+
+Decision Trees can be a suitable choice for predicting a categorical target variable like `Order.Priority`. They are a type of supervised machine learning algorithm that can handle both classification and regression tasks. In this case, I chose to classify orders into different priority levels and have opted to use a decision tree model.
+
+Some considerations for using a decision tree model for predicting `Order.Priority`:
+
+* Well-suited for predicting categorical target variables, such as priority levels (critcal, low, medium, high).
+* Highly interpretable models that can easily visualize the tree structure and understand the rules that lead to a particular priority classification. 
+* Can provide information about feature importance, helping you identify which factors have the most significant influence on order priority.
+* Can capture nonlinear relationships between input features and the target variable, which can be valuable if the relationship between order attributes and priority is not linear.
+
+There are also some considerations and potential challenges when using decision trees:
+
+* Decision trees can be prone to overfitting, where the model captures noise in the training data and performs poorly on unseen data.
+* If the dataset has imbalanced class distributions for order priorities (e.g., a lot of "low" priority orders and few "high" priority orders), these will need to be addressed during model training and evaluation.
+* The quality of your input data, including missing values and outliers, can affect the performance of a decision tree model.
+* To achieve the best performance with a decision tree, you may need to tune hyperparameters, such as the maximum depth of the tree or the minimum number of samples required to split a node.
+
+$~$
+
+### Model Building:
+
+First, we start by splitting both datasets into the 75% training and 25% testing
+```{r, echo=FALSE}
+# Split the data into training and testing sets
+
+# create same random numbers for reproduction
+set.seed(123)
+
+# small data set splitting
+small_df_split <- initial_split(small_df, prop = 0.75)
+small_train <- training(small_df_split)
+small_test <- testing(small_df_split)
+#head(small_train)
+
+# large data set splitting
+large_df_split <- initial_split(large_df, prop = 0.75)
+large_train <- training(large_df_split)
+large_test <- testing(large_df_split)
+#head(large_train)
+```
+
+
+$~$
+
+Now we can start the decision tree for the small data set by setting `Order.Priority` as our target variable followed by the rest of the variables. The results are below:
+
+```{r, echo=FALSE}
+# create the decisionn tree
+small_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + 
+                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit,
+                        method = "class", data = small_train)
+
+# plot the chart
+prp(small_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
+
+Now to test the above model using our `small_df` testing data:
+```{r, echo=FALSE}
+# creating our prediction
+small_df_prediction <- predict(small_df_model, small_test, type = "class")
+small_df_prediction <- table(small_test$Order.Priority, small_df_prediction)
+kable(small_df_prediction, align = "lcccc")
+```
+
+and finally checking the accuracy of the model:
+```{r, echo=FALSE}
+# Testing the accuracy of the model
+kable(sum(diag(small_df_prediction)) / nrow(small_test), caption = "Accuracy", align = "l")
+```
+
+
+
+
+```{r, echo=FALSE}
+large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + 
+                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit,
+                        method = "class", data = large_train)
+
+prp(large_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
+
+
+```{r, echo=FALSE}
+large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date +
+                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit, 
+                        method = "class", data = large_train, 
+                        control=rpart.control(minsplit=2, minbucket=3, cp=0.0015))
+
+prp(large_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
+
+Now to test the above model using our `large_df` testing data:
+```{r, echo=FALSE}
+# creating our prediction
+large_df_prediction <- predict(large_df_model, large_test, type = "class")
+large_df_prediction <- table(large_test$Order.Priority, large_df_prediction)
+kable(large_df_prediction, align = "lcccc")
+```
+and finally checking the accuracy of the model:
+```{r, echo=FALSE}
+# Testing the accuracy of the model
+kable(sum(diag(large_df_prediction)) / nrow(large_test), caption = "Accuracy", align = "l")
+```
+
+$~$
+
+### Conclusion:
+
+#### Answer questions such as:
+1. Are the columns of your data correlated?
+2. Are there labels in your data? Did that impact your choice of algorithm?
+3. What are the pros and cons of each algorithm you selected?
+4. How your choice of algorithm relates to the datasets (was your choice of algorithm impacted by the datasets you chose)?
+5. Which result will you trust if you need to make a business decision?
+6. Do you think an analysis could be prone to errors when using too much data, or when using the least amount possible?
+7. How does the analysis between data sets compare?
+
+
+$~$
+
+### References:
+* https://stackoverflow.com/questions/31836405/color-nodes-in-rpart-tree
+* https://www.datacamp.com/tutorial/decision-trees-R
+
+--------------------------------------------------------------
+$~$
 
 ```{r, datacamp code1, echo=FALSE}
 # # Prepare the dataset for ggplot2
@@ -171,22 +547,28 @@ kable(head(large_df),caption='Normal `kable` usage.')
 # print(small_df_histograms)
 ```
 
+```{r, echo=FALSE}
+# Data Preparation
+# # small data set 2
+# small_df2$Region <- as.factor(small_df2$Region)
+# small_df2$Country <- as.factor(small_df2$Country)
+# small_df2$Item.Type <- as.factor(small_df2$Item.Type)
+# small_df2$Sales.Channel <- as.factor(small_df2$Sales.Channel)
+# small_df2$Order.Priority <- as.factor(small_df2$Order.Priority)
+# small_df2$Order.Date <- as.Date(small_df2$Order.Date, "%m/%d/%Y")
+# small_df2$Ship.Date <- as.Date(small_df2$Ship.Date, "%m/%d/%Y")
+# 
+# # large data set 2
+# large_df2$Region <- as.factor(large_df2$Region)
+# large_df2$Country <- as.factor(large_df2$Country)
+# large_df2$Item.Type <- as.factor(large_df2$Item.Type)
+# large_df2$Sales.Channel <- as.factor(large_df2$Sales.Channel)
+# large_df2$Order.Priority <- as.factor(large_df2$Order.Priority)
+# large_df2$Order.Date <- as.Date(large_df2$Order.Date, "%m/%d/%Y")
+# large_df2$Ship.Date <- as.Date(large_df2$Ship.Date, "%m/%d/%Y")
+```
 
-```{r}
-# Split the data into training and testing sets
-
-set.seed(123)
-
-# small data set
-small_df_split <- initial_split(small_df, prop = 0.75)
-small_train <- training(small_df_split)
-small_test <- testing(small_df_split)
-
-# large data set
-large_df_split <- initial_split(large_df, prop = 0.75)
-large_train <- training(large_df_split)
-large_test <- testing(large_df_split)
-
+```{r, echo=FALSE}
 # set.seed(213)
 # 
 # # small data set
@@ -200,80 +582,23 @@ large_test <- testing(large_df_split)
 # large_test2 <- testing(large_df2_split)
 ```
 
-
-$~$
-
-### Model Building:
-
-I've selected to create decision trees for both datasets and predict the order
-
-```{r}
-small_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + 
-                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , 
-                        method = "class", data = small_train)
-
-prp(small_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
-```
-
-```{r}
-small_df_prediction <- predict(small_df_model, small_test, type = "class")
-small_df_prediction <- table(small_test$Order.Priority, small_df_prediction)
-small_df_prediction
-```
-
-```{r}
-sum(diag(small_df_prediction)) / nrow(small_test)
-```
-
-
-```{r}
-# small_df2_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = small_train2)
+```{r, echo=FALSE}
+# small_df2_model <- rpart(small_df2 ~ ., method = "class", data = small_train2)
 # 
 # prp(small_df2_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
 ```
 
-```{r}
+```{r, echo=FALSE}
 # small_df2_prediction <- predict(small_df2_model, small_test2, type = "class")
 # small_df2_prediction <- table(small_test2$Order.Priority, small_df2_prediction)
 # small_df2_prediction
 ```
 
-```{r}
+```{r, echo= FALSE}
 # sum(diag(small_df2_prediction)) / nrow(small_test2)
 ```
 
-```{r}
-large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + 
-                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit,
-                        method = "class", data = large_train)
-
-prp(large_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
-```
-
-
-```{r}
-large_df_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + 
-                          Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit, 
-                        method = "class", data = large_train, 
-                        control=rpart.control(minsplit=2, minbucket=3, cp=0.0015))
-
-prp(large_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
-```
-
-
-```{r}
-large_df_prediction <- predict(large_df_model, large_test, type = "class")
-large_df_prediction <- table(large_test$Order.Priority, large_df_prediction)
-large_df_prediction
-```
-
-```{r}
-sum(diag(large_df_prediction)) / nrow(large_test)
-```
-
-
-
-```{r}
+```{r, echo=FALSE}
 # large_df2_model <- rpart(Order.Priority ~ Region + Item.Type + Sales.Channel + Order.Date + Order.ID + Ship.Date + Units.Sold + Total.Revenue + Total.Cost + Total.Profit , method = "class", data = large_train2)
 # 
 # prp(large_df2_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
@@ -283,17 +608,15 @@ sum(diag(large_df_prediction)) / nrow(large_test)
 # prp(large_df2_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
 ```
 
-```{r}
+```{r, echo=FALSE}
 # large_df2_prediction <- predict(large_df2_model, large_test2, type = "class")
 # large_df2_prediction <- table(large_test2$Order.Priority, large_df2_prediction)
 # large_df2_prediction
 ```
 
-```{r}
+```{r, echo=FALSE}
 # sum(diag(large_df2_prediction)) / nrow(large_test2)
 ```
-
-
 
 ```{r, datacamp code2, echo=FALSE}
 # # Create a decision tree model specification for small data set
@@ -314,7 +637,6 @@ sum(diag(large_df_prediction)) / nrow(large_test)
 # tree_fit_large <- tree_spec_large %>%
 #  fit(Units.Sold ~ ., data = large_train)
 ```
-
 
 ```{r, datacamp code3, echo=FALSE}
 # # Make predictions on the testing data for the small data set
@@ -349,7 +671,6 @@ sum(diag(large_df_prediction)) / nrow(large_test)
 # rpart.plot(tree_fit_small$fit, type = 4, extra = 101, under = TRUE, cex = 0.8, box.palette = "auto")
 ```
 
-
 ```{r, datacamp code5, echo=FALSE}
 # # Plot the decision tree for large data set
 # rpart.plot(tree_fit_large$fit, type = 4, extra = 101, under = TRUE, cex = 0.8, box.palette = "auto")
@@ -364,28 +685,6 @@ sum(diag(large_df_prediction)) / nrow(large_test)
 # rules_large <- rpart.rules(tree_fit_large$fit)
 # print(rules_large)
 ```
-
-
-$~$
-
-### Conclusion:
-
-#### Answer questions such as:
-1. Are the columns of your data correlated?
-2. Are there labels in your data? Did that impact your choice of algorithm?
-3. What are the pros and cons of each algorithm you selected?
-4. How your choice of algorithm relates to the datasets (was your choice of algorithm impacted by the datasets you chose)?
-5. Which result will you trust if you need to make a business decision?
-6. Do you think an analysis could be prone to errors when using too much data, or when using the least amount possible?
-7. How does the analysis between data sets compare?
-
-
-
-
-
-### References:
-* https://stackoverflow.com/questions/31836405/color-nodes-in-rpart-tree
-* https://www.datacamp.com/tutorial/decision-trees-R
 
 
 
