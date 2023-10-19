@@ -11,7 +11,7 @@ output:
     dev: cairo_pdf
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, out.width="50%"}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 $~$
@@ -39,26 +39,65 @@ $~$
 
 #### Load Libraries:
 Below are the libraries used to complete this assignment
-```{r}
-
+```{r, cache=FALSE, results=FALSE, warning=FALSE, comment=FALSE}
+library(tidyverse) # data prep
+library(skimr) # data prep
+library(rpart) # decision tree package
+library(rpart.plot) # decision tree display package
+library(knitr) # kable function for table
+library(tidyr) # splitting data
+library(ggplot2) # graphing
+library(hrbrthemes) # chart customization
+library(gridExtra) # layering charts
+library(stringr) # data prep
+library(tidymodels) # predictions
 ```
 
 $~$
 
 #### Load Data:
-The data chosen from Excel BI Analytics were the 100 sales records for the small and 5000 sales records for the large. The data sets are included in my [GitHub](https://github.com/letisalba/Data-622/tree/master/Homework-1/csv) and read into R.
-```{r}
+The data chosen is from [Kaggle.com](https://www.kaggle.com/datasets/uciml/red-wine-quality-cortez-et-al-2009) called Red Wine Quality. The data set is included in my [GitHub](https://github.com/letisalba/Data-622/tree/master/Homework-2) and read into R.
+```{r, loading data, echo = FALSE}
+wine_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-2/csv/winequality-red.csv")
+```
 
+
+```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
+# display the small dataset
+kable(head(wine_df), align = "l", table.attr = "style='width:30%;'")
 ```
 
 $~$
 
 ### The Data:
 
+The two datasets are related to red and white variants of the Portuguese "Vinho Verde" wine. For more details, consult: http://www.vinhoverde.pt/en/ or the reference [Cortez et al., 2009].  Due to privacy and logistic issues, only physicochemical (inputs) and sensory (the output) variables are available (e.g. there is no data about grape types, wine brand, wine selling price, etc.).
+
+These datasets can be viewed as classification or regression tasks.  The classes are ordered and not balanced (e.g. there are many more normal wines than excellent or poor ones). Outlier detection algorithms could be used to detect the few excellent or poor wines. Also, we are not sure if all input variables are relevant. So it could be interesting to test feature selection methods.
+
+Input variables (based on physicochemical tests):
+1 - fixed acidity
+2 - volatile acidity
+3 - citric acid
+4 - residual sugar
+5 - chlorides
+6 - free sulfur dioxide
+7 - total sulfur dioxide
+8 - density
+9 - pH
+10 - sulphates
+11 - alcohol
+Output variable (based on sensory data):
+12 - quality (score between 0 and 10)
 
 $~$
 
 ### Data Exploration:
+
+```{r, echo=FALSE}
+# summary of the dataset
+skim(wine_df)
+```
 
 
 $~$
