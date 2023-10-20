@@ -238,9 +238,9 @@ $~$
 
 ### Data Preparation:
 
-Now that I've visualized the data it's time to make changes to the variables which aren't much.
+Now that I've visualized the data I want to do one minor change to the columns. Most of the columns have a "." and I'm changing it to an "_".
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
 # change the names of the columns
 oldnames = c("fixed.acidity", "volatile.acidity", "citric.acid", "residual.sugar", "chlorides", "free.sulfur.dioxide", "total.sulfur.dioxide", "density", "pH", "sulphates","alcohol", "quality")
 newnames = c("Fixed_Acidity", "Volatile_Acidity", "Citric_Acid", "Residual_Sugar", "Chlorides", "Free_Sulfur_Dioxide", "Total_Sulfur_Dioxide", "Density", "pH", "Sulphates", "Alcohol", "Quality")

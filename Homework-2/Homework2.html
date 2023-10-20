@@ -924,29 +924,9 @@ the exception of Density and pH</li>
 </div>
 <div id="data-preparation" class="section level3">
 <h3>Data Preparation:</h3>
-<p>Now that I’ve visualized the data it’s time to make changes to the
-variables which aren’t much.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># change the names of the columns</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>oldnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;fixed.acidity&quot;</span>, <span class="st">&quot;volatile.acidity&quot;</span>, <span class="st">&quot;citric.acid&quot;</span>, <span class="st">&quot;residual.sugar&quot;</span>, <span class="st">&quot;chlorides&quot;</span>, <span class="st">&quot;free.sulfur.dioxide&quot;</span>, <span class="st">&quot;total.sulfur.dioxide&quot;</span>, <span class="st">&quot;density&quot;</span>, <span class="st">&quot;pH&quot;</span>, <span class="st">&quot;sulphates&quot;</span>,<span class="st">&quot;alcohol&quot;</span>, <span class="st">&quot;quality&quot;</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>newnames <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;Fixed_Acidity&quot;</span>, <span class="st">&quot;Volatile_Acidity&quot;</span>, <span class="st">&quot;Citric_Acid&quot;</span>, <span class="st">&quot;Residual_Sugar&quot;</span>, <span class="st">&quot;Chlorides&quot;</span>, <span class="st">&quot;Free_Sulfur_Dioxide&quot;</span>, <span class="st">&quot;Total_Sulfur_Dioxide&quot;</span>, <span class="st">&quot;Density&quot;</span>, <span class="st">&quot;pH&quot;</span>, <span class="st">&quot;Sulphates&quot;</span>, <span class="st">&quot;Alcohol&quot;</span>, <span class="st">&quot;Quality&quot;</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co"># input the change</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>wine_df2 <span class="ot">&lt;-</span> wine_df <span class="sc">%&gt;%</span> </span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="fu">rename_at</span>(<span class="fu">vars</span>(oldnames), <span class="sc">~</span> newnames)</span></code></pre></div>
-<pre><code>## Warning: Using an external vector in selections was deprecated in tidyselect 1.1.0.
-## ℹ Please use `all_of()` or `any_of()` instead.
-##   # Was:
-##   data %&gt;% select(oldnames)
-## 
-##   # Now:
-##   data %&gt;% select(all_of(oldnames))
-## 
-## See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-## generated.</code></pre>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># display the dataset</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(wine_df2), <span class="at">align =</span> <span class="st">&quot;l&quot;</span>, <span class="at">table.attr =</span> <span class="st">&quot;style=&#39;width:30%;&#39;&quot;</span>)</span></code></pre></div>
+<p>Now that I’ve visualized the data I want to do one minor change to
+the columns. Most of the columns have a “.” and I’m changing it to an
+“_“.</p>
 <table>
 <colgroup>
 <col width="9%" />
