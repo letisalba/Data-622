@@ -61,9 +61,8 @@ The data chosen is from [Kaggle.com](https://www.kaggle.com/datasets/uciml/red-w
 wine_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-2/csv/winequality-red.csv")
 ```
 
-
 ```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
-# display the small dataset
+# display the dataset
 kable(head(wine_df), align = "l", table.attr = "style='width:30%;'")
 ```
 
@@ -71,7 +70,7 @@ $~$
 
 ### The Data:
 
-The two datasets are related to red and white variants of the Portuguese "Vinho Verde" wine. For more details, consult: http://www.vinhoverde.pt/en/ or the reference [Cortez et al., 2009].  Due to privacy and logistic issues, only physicochemical (inputs) and sensory (the output) variables are available (e.g. there is no data about grape types, wine brand, wine selling price, etc.).
+Based on the description from Kaggle, the two datasets are related to red and white variants of the Portuguese "Vinho Verde" wine. For more details, consult: http://www.vinhoverde.pt/en/ or the reference [Cortez et al., 2009].  Due to privacy and logistic issues, only physicochemical (inputs) and sensory (the output) variables are available (e.g. there is no data about grape types, wine brand, wine selling price, etc.).
 
 These datasets can be viewed as classification or regression tasks.  The classes are ordered and not balanced (e.g. there are many more normal wines than excellent or poor ones). Outlier detection algorithms could be used to detect the few excellent or poor wines. Also, we are not sure if all input variables are relevant. So it could be interesting to test feature selection methods.
 
@@ -94,14 +93,166 @@ $~$
 
 ### Data Exploration:
 
+Using the `skimr` library we can obtain a quick summary statistic of the dataset. It has 1599 values with 12 variables all numeric.
 ```{r, echo=FALSE}
 # summary of the dataset
 skim(wine_df)
 ```
+$~$
 
+##### Let's take a look at the distributions of the numeric variables for the small data set:
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
+# histogram for fixed.acidity
+p1 <- wine_df %>% 
+ggplot( aes(x=fixed.acidity)) +
+    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+    ggtitle("Fixed Acidity") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for volatile.acidity
+p2 <- wine_df %>% 
+ggplot( aes(x=volatile.acidity)) +
+    geom_histogram(fill="#69a0b3", color="#e9ecef", alpha=0.8) +
+    ggtitle("Volatile Acidity") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for citric.acid
+p3 <- wine_df %>% 
+ggplot( aes(x=citric.acid)) +
+    geom_histogram(fill="#696fb3", color="#e9ecef", alpha=0.8) +
+    ggtitle("Citric Acid") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for residual.sugar
+p4 <- wine_df %>% 
+ggplot( aes(x=residual.sugar)) +
+    geom_histogram(fill="#b369ae", color="#e9ecef", alpha=0.8) +
+    ggtitle("Residual Sugar") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for chlorides
+p5 <- wine_df %>% 
+ggplot( aes(x=chlorides)) +
+    geom_histogram(fill="#77b369", color="#e9ecef", alpha=0.8) +
+    ggtitle("Chlorides") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for free.sulfur.dioxide
+p6 <- wine_df %>% 
+ggplot( aes(x=free.sulfur.dioxide)) +
+    geom_histogram(fill="#b37e69", color="#e9ecef", alpha=0.8) +
+    ggtitle("Free Sulfur Dioxide") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for total.sulfur.dioxide
+p7 <- wine_df %>% 
+ggplot( aes(x=total.sulfur.dioxide)) +
+    geom_histogram(fill="#c96976", color="#e9ecef", alpha=0.8) +
+    ggtitle("Total Sulfur Dioxide") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for density
+p8 <- wine_df %>% 
+ggplot( aes(x=density)) +
+    geom_histogram(fill="#ffbe8c", color="#e9ecef", alpha=0.8) +
+    ggtitle("Density") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for pH
+p9 <- wine_df %>% 
+ggplot( aes(x=pH)) +
+    geom_histogram(fill="#ecff8c", color="#e9ecef", alpha=0.8) +
+    ggtitle("pH") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for sulphates
+p10 <- wine_df %>% 
+ggplot( aes(x=sulphates)) +
+    geom_histogram(fill="#8cffcb", color="#e9ecef", alpha=0.8) +
+    ggtitle("Sulphates") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for alcohol
+p11 <- wine_df %>% 
+ggplot( aes(x=alcohol)) +
+    geom_histogram(fill="#D0CECE", color="#e9ecef", alpha=0.8) +
+    ggtitle("Alcohol") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# histogram for quality
+p12 <- wine_df %>% 
+ggplot( aes(x=quality)) +
+    geom_histogram(fill="#CB747E", color="#e9ecef", alpha=0.8) +
+    ggtitle("Quality") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# displaying the histograms
+par(mfrow = c(3, 4))
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12)
+```
+
+
+##### Some notes on the visualizations above: 
+
+* Most of the distributions for the variables are right skewed with the exception of Density and pH
+* Density and pH have more of a normal distribution
+* Citric Acid has a more uniform distribution
 
 $~$
+
 ### Data Preparation:
+
+Now that I've visualized the data it's time to make changes to the variables which aren't much.
+
+```{r}
+# change the names of the columns
+oldnames = c("fixed.acidity", "volatile.acidity", "citric.acid", "residual.sugar", "chlorides", "free.sulfur.dioxide", "total.sulfur.dioxide", "density", "pH", "sulphates","alcohol", "quality")
+newnames = c("Fixed_Acidity", "Volatile_Acidity", "Citric_Acid", "Residual_Sugar", "Chlorides", "Free_Sulfur_Dioxide", "Total_Sulfur_Dioxide", "Density", "pH", "Sulphates", "Alcohol", "Quality")
+
+# input the change
+wine_df2 <- wine_df %>% 
+  rename_at(vars(oldnames), ~ newnames)
+
+# display the dataset
+kable(head(wine_df2), align = "l", table.attr = "style='width:30%;'")
+```
+
 
 $~$
 
