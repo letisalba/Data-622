@@ -258,6 +258,26 @@ $~$
 
 ### Model Building:
 
+```{r, echo=FALSE}
+# create some random numbers for reproduction
+set.seed(829)
+
+# Split data into training and testing sets
+wine_df2_split <- initial_split(wine_df2, prop = 0.75)
+wine_train <- training(wine_df2_split)
+wine_test <- testing(wine_df2_split)
+
+```
+
+
+```{r, echo=FALSE}
+# create the decision tree
+wine_model <- rpart(Quality ~ ., method = "class", data = wine_train)
+
+# display the decision tree
+prp(small_df_model, extra=1, faclen=0,  nn=T, box.palette="Blues")
+```
+
 
 $~$
 
