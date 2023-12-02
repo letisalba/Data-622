@@ -456,19 +456,6 @@ algorithm.</li>
 <li>Why?</li>
 </ul></li>
 </ul>
-<p>Format</p>
-<ul>
-<li>Essay (minimum 500 word document)
-<ul>
-<li>Write a short essay explaining your selection of algorithms and how
-they relate to the data and what you are trying to do</li>
-</ul></li>
-<li>Analysis using R or Python (submit code + errors + analysis as
-notebook or copy/paste to document)
-<ul>
-<li>Include analysis R (or Python) code.</li>
-</ul></li>
-</ul>
 <p><span class="math inline">\(~\)</span></p>
 <div id="load-libraries" class="section level4">
 <h4>Load Libraries:</h4>
@@ -519,7 +506,7 @@ FALSE ✖ dplyr::lag()         masks stats::lag()
 FALSE ✖ dials::prune()       masks rpart::prune()
 FALSE ✖ yardstick::spec()    masks readr::spec()
 FALSE ✖ recipes::step()      masks stats::step()
-FALSE • Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
+FALSE • Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">library</span>(corrplot) <span class="co"># correlation plot</span></span></code></pre></div>
 <pre><code>FALSE corrplot 0.92 loaded</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">library</span>(randomForest) <span class="co"># for the random forest</span></span></code></pre></div>
@@ -1712,12 +1699,15 @@ it’s accuracy. Results are below:</p>
 <p>The summary of the SVM results:</p>
 <pre><code>##   3   4   5   6   7   8 
 ##   0   0 201 168  28   0</code></pre>
-<p>The accuracy of the SVM is 63.7% for the original data set:</p>
+<p>The accuracy of this SVM is 63.7% for the original data set:</p>
 <pre><code>##  Accuracy 
 ## 0.6372796</code></pre>
 <p><span class="math inline">\(~\)</span></p>
-<p>Second SVM algorithm</p>
-<p>The confusion matrix for SVM:</p>
+<div id="second-svm-algorithm" class="section level4">
+<h4>Second SVM algorithm</h4>
+<p>Decided to do a second SVM algorithm to check for any changes in
+accuracy, these results are below.</p>
+<p>The confusion matrix for the second SVM:</p>
 <pre><code>## Confusion Matrix and Statistics
 ## 
 ##           Reference
@@ -1754,21 +1744,16 @@ it’s accuracy. Results are below:</p>
 <p>The summary of the SVM results:</p>
 <pre><code>##   3   4   5   6   7   8 
 ##   0   0 179 201  17   0</code></pre>
-<p>The accuracy of the SVM is 60.5% for the original data set which is
-lower than the first SVM accuracy:</p>
+<p>The accuracy of the second SVM is 60.5% for the original data set
+which is lower than the first SVM accuracy.</p>
 <pre><code>## Accuracy 
 ## 0.604534</code></pre>
 <p><span class="math inline">\(~\)</span></p>
+</div>
 <div id="comparison-of-models" class="section level4">
 <h4>Comparison of models:</h4>
 <p>Lastly, let’s do a model comparison for Decision Tree, Random Forest
 and SVM:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="co"># Compare models</span></span>
-<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a>model_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Decision Tree&quot;</span>,<span class="st">&quot;Random Forest&quot;</span>, <span class="st">&quot;SVM&quot;</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a>accuracies <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5843829</span>, <span class="fl">0.7128463</span>, <span class="fl">0.6372796</span>)</span>
-<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Model =</span> model_names, <span class="at">Accuracy =</span> accuracies)</span>
-<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>results <span class="ot">&lt;-</span> results[<span class="fu">order</span>(results<span class="sc">$</span>Accuracy, <span class="at">decreasing =</span> <span class="cn">TRUE</span>), ]</span>
-<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>results</span></code></pre></div>
 <pre><code>##           Model  Accuracy
 ## 2 Random Forest 0.7128463
 ## 3           SVM 0.6372796
@@ -1800,6 +1785,101 @@ choice across a wide range of machine learning applications. Keep in
 mind the selection between using Random Forest for classification or
 regression often depends on the specific nature of the problem and the
 characteristics of the dataset being analyzed.</p>
+<p><span class="math inline">\(~\)</span></p>
+</div>
+<div id="academic-content" class="section level3">
+<h3>Academic Content:</h3>
+<ul>
+<li><a href="https://www.iaeng.org/publication/IMECS2011/IMECS2011_pp442-447.pdf?msclkid=39f78880b8bd11ecbe154fab1b37ca9b">Detecting
+Credit Card Fraud by Decision Trees and Support Vector Machines</a></li>
+</ul>
+<p>The article discusses credit card fraud detection using decision
+trees and Support Vector Machines (SVMs) in response to the escalating
+fraud rates causing substantial financial losses globally. While
+preventive measures like CHIP&amp;PIN exist, they often fail to curb
+prevalent fraud types like virtual POS terminal or mail order credit
+card fraud. As a result, fraud detection becomes crucial. The study
+compares the effectiveness of SVM and decision tree-based models for
+credit card fraud detection using real datasets.</p>
+<p>It emphasizes the challenges of fraud detection due to limited
+transaction data, constantly changing fraudulent behavior, limited
+collaboration on fraud detection ideas, lack of available datasets for
+benchmarking, highly skewed data with minimal fraudulent instances, and
+constantly evolving fraudulent behaviors.</p>
+<p>The study employs decision tree algorithms (C5.0, C&amp;RT, CHAID)
+and different SVM methods (polynomial, sigmoid, linear, RBF kernels) to
+build models based on different ratios of fraudulent to normal records.
+The performance of these models is assessed using accuracy rates on
+training and testing datasets.</p>
+<p>Results show that decision tree models generally outperform SVM
+models, especially in catching fraudulent transactions. Although SVM
+models initially tend to overfit training data, their performance
+improves with larger datasets but still lags behind decision tree models
+in identifying fraudulent transactions.</p>
+<ul>
+<li><a href="https://cuny-bb.primo.exlibrisgroup.com/discovery/fulldisplay?docid=cdi_doaj_primary_oai_doaj_org_article_c72b9155a5bb464bba5b149af728f2f3&amp;context=PC&amp;vid=01CUNY_BB:CUNY_BB&amp;lang=en&amp;search_scope=IZ_CI_AW&amp;adaptor=Primo%20Central&amp;tab=Everything&amp;query=any,contains,Detecting%20Credit%20Card%20Fraud%20by%20Decision%20Trees%20and%20Support%20Vector%20Machines%20-%20Y.%20Sahin%20and%20E.%20Duman&amp;offset=0">Credit
+Card Fraud Detection using Decision Tree and Random Forest</a></li>
+</ul>
+<p>The article discusses the importance of secure credit card fraud
+detection systems in the era of technological advancement and increased
+online shopping. It highlights the benefits of online shopping,
+particularly the convenience and time-saving aspects, along with the
+popularity of credit card payments. However, it addresses the
+significant concern of rising fraudulent credit card transactions,
+causing financial losses for both banks and customers.</p>
+<p>The paper explores the application of various machine learning
+algorithms for credit card fraud detection, including Naïve Bayes,
+Logistic Regression, SVM, Decision Trees, Random Forest, Genetic
+Algorithm, J48, and AdaBoost. These algorithms are utilized to analyze
+datasets and accurately identify fraudulent transactions.</p>
+<ul>
+<li><a href="https://www.sciencedirect.com/science/article/abs/pii/S0360835220304125">Demand
+forecasting with color parameter in retail apparel industry using
+artificial neural networks (ANN) and support vector machines (SVM)
+methods</a></li>
+</ul>
+<p>The article explores demand forecasting in the retail apparel
+industry, specifically focusing on the impact of including color details
+in predictive models. The study aims to improve sales forecasting
+accuracy by utilizing artificial intelligence (AI) techniques, such as
+artificial neural networks (ANN) and support vector machines (SVM).
+These models are used to predict sales while considering various factors
+like weather, gender, special days, and, notably, color details of
+products.</p>
+<p>The importance of demand forecasting is highlighted due to its
+significant impact on a company’s success. Inaccurate predictions can
+lead to reduced sales, loss of reputation, and income. Traditional
+forecasting methods often require complete data, while AI systems can
+handle missing data and process large datasets more effectively.</p>
+<p>The study conducts demand forecasting using ANN and SVM models across
+different datasets involving nine products separately and one combined
+dataset. It compares the models’ performance by considering the root
+mean square error (RMSE). The results indicate that ANN outperformed SVM
+in seven out of ten datasets without color details, while their
+performances were similar for datasets including color details.</p>
+<p>Additionally, the article provides theoretical information about ANN
+and SVM. Practical applications of these models using R programming
+language on sales data from a textile retailer are discussed. The
+conclusion highlights the growing significance of accurate demand
+forecasting in shaping business strategies, especially in an industry
+characterized by rapid changes in customer demand.</p>
+<p><span class="math inline">\(~\)</span></p>
+<div id="references" class="section level4">
+<h4>References:</h4>
+<ol style="list-style-type: decimal">
+<li><p>Sahin, Yusuf &amp; Duman, Ekrem. (2011). Detecting Credit Card
+Fraud by Decision Trees and Support Vector Machines. IMECS 2011 -
+International MultiConference of Engineers and Computer Scientists 2011.
+1. 442-447.</p></li>
+<li><p>Shah, D., &amp; Kumar Sharma, L. (2023). Credit Card Fraud
+Detection using Decision Tree and Random Forest. ITM Web of Conferences,
+53, 2012-. <a href="https://doi.org/10.1051/itmconf/20235302012" class="uri">https://doi.org/10.1051/itmconf/20235302012</a></p></li>
+<li><p>İlker Güven, Fuat Şimşir, Demand forecasting with color parameter
+in retail apparel industry using artificial neural networks (ANN) and
+support vector machines (SVM) methods, Computers &amp; Industrial
+Engineering, Volume 147,2020,106678,ISSN 0360-8352,<a href="https://doi.org/10.1016/j.cie.2020.106678" class="uri">https://doi.org/10.1016/j.cie.2020.106678</a>. (<a href="https://www.sciencedirect.com/science/article/pii/S0360835220304125" class="uri">https://www.sciencedirect.com/science/article/pii/S0360835220304125</a>)</p></li>
+</ol>
+</div>
 </div>
 
 

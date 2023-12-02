@@ -28,13 +28,6 @@ $~$
   * Is it better for classification or regression scenarios?
   * Do you agree with the recommendations?
   * Why?
-  
-Format
-
-* Essay (minimum 500 word document)
-  * Write a short essay explaining your selection of algorithms and how they relate to the data and what you are trying to do
-* Analysis using R or Python (submit code + errors + analysis as notebook or copy/paste to document)
-  * Include analysis R (or Python) code.
 
 $~$
 
@@ -736,7 +729,7 @@ summary(svm_result)
 ```
 
 
-The accuracy of the SVM is 63.7% for the original data set:
+The accuracy of this SVM is 63.7% for the original data set:
 ```{r, echo=FALSE}
 # Extract accuracy from the confusion matrix
 accuracy_svm <- confusionMatrix(svm_result, svm_valid$Quality)$overall["Accuracy"]
@@ -745,7 +738,9 @@ accuracy_svm
 
 $~$
 
-Second SVM algorithm
+#### Second SVM algorithm
+
+Decided to do a second SVM algorithm to check for any changes in accuracy, these results are below.
 ```{r, echo=FALSE}
 # create some random numbers for reproduction
 set.seed(9)
@@ -757,7 +752,7 @@ svm_valid2 <- wine3[-inTrain,]
 ```
 
 
-The confusion matrix for SVM:
+The confusion matrix for the second SVM:
 ```{r, echo=FALSE}
 # SVM
 svm_model2 <- svm(Quality ~ Alcohol + Volatile_Acidity + Sulphates + Total_Sulfur_Dioxide, svm_train2)
@@ -776,7 +771,7 @@ summary(svm_result2)
 ```
 
 
-The accuracy of the SVM is 60.5% for the original data set which is lower than the first SVM accuracy:
+The accuracy of the second SVM is 60.5% for the original data set which is lower than the first SVM accuracy.
 ```{r, echo=FALSE}
 # Extract accuracy from the confusion matrix
 accuracy_svm2 <- confusionMatrix(svm_result2, svm_valid2$Quality)$overall["Accuracy"]
@@ -788,7 +783,7 @@ $~$
 #### Comparison of models:
 
 Lastly, let's do a model comparison for Decision Tree, Random Forest and SVM:
-```{r}
+```{r, echo=FALSE}
 # Compare models
 model_names <- c("Decision Tree","Random Forest", "SVM")
 accuracies <- c(0.5843829, 0.7128463, 0.6372796)
@@ -812,3 +807,48 @@ The Random Forest model outperformed the Decision Tree with an accuracy of 71.3%
 The SVM model achieved an accuracy of 63.7%. While it showed high specificity for most classes, it struggled with low sensitivity in classes 3, 4, and 8.
 
 Overall, I'd recommend Random Forest as the algorithm of choice for this dataset or similar for more accurate results since it outperformed decision tree by almost 20% and SVM by 11%. Random Forest is a versatile algorithm that performs well in both classification and regression scenarios. Its ability to handle high-dimensional data, deal with non-linear relationships, and reduce overfitting makes it a popular choice across a wide range of machine learning applications. Keep in mind the selection between using Random Forest for classification or regression often depends on the specific nature of the problem and the characteristics of the dataset being analyzed. 
+
+$~$
+
+### Academic Content:
+
+* [Detecting Credit Card Fraud by Decision Trees and Support Vector Machines](https://www.iaeng.org/publication/IMECS2011/IMECS2011_pp442-447.pdf?msclkid=39f78880b8bd11ecbe154fab1b37ca9b)
+
+The article discusses credit card fraud detection using decision trees and Support Vector Machines (SVMs) in response to the escalating fraud rates causing substantial financial losses globally. While preventive measures like CHIP&PIN exist, they often fail to curb prevalent fraud types like virtual POS terminal or mail order credit card fraud. As a result, fraud detection becomes crucial. The study compares the effectiveness of SVM and decision tree-based models for credit card fraud detection using real datasets.
+
+It emphasizes the challenges of fraud detection due to limited transaction data, constantly changing fraudulent behavior, limited collaboration on fraud detection ideas, lack of available datasets for benchmarking, highly skewed data with minimal fraudulent instances, and constantly evolving fraudulent behaviors.
+
+The study employs decision tree algorithms (C5.0, C&RT, CHAID) and different SVM methods (polynomial, sigmoid, linear, RBF kernels) to build models based on different ratios of fraudulent to normal records. The performance of these models is assessed using accuracy rates on training and testing datasets.
+
+Results show that decision tree models generally outperform SVM models, especially in catching fraudulent transactions. Although SVM models initially tend to overfit training data, their performance improves with larger datasets but still lags behind decision tree models in identifying fraudulent transactions.
+
+
+* [Credit Card Fraud Detection using Decision Tree and Random Forest](https://cuny-bb.primo.exlibrisgroup.com/discovery/fulldisplay?docid=cdi_doaj_primary_oai_doaj_org_article_c72b9155a5bb464bba5b149af728f2f3&context=PC&vid=01CUNY_BB:CUNY_BB&lang=en&search_scope=IZ_CI_AW&adaptor=Primo%20Central&tab=Everything&query=any,contains,Detecting%20Credit%20Card%20Fraud%20by%20Decision%20Trees%20and%20Support%20Vector%20Machines%20-%20Y.%20Sahin%20and%20E.%20Duman&offset=0)
+
+The article discusses the importance of secure credit card fraud detection systems in the era of technological advancement and increased online shopping. It highlights the benefits of online shopping, particularly the convenience and time-saving aspects, along with the popularity of credit card payments. However, it addresses the significant concern of rising fraudulent credit card transactions, causing financial losses for both banks and customers.
+
+The paper explores the application of various machine learning algorithms for credit card fraud detection, including Naïve Bayes, Logistic Regression, SVM, Decision Trees, Random Forest, Genetic Algorithm, J48, and AdaBoost. These algorithms are utilized to analyze datasets and accurately identify fraudulent transactions. 
+
+
+* [Demand forecasting with color parameter in retail apparel industry using artificial neural networks (ANN) and support vector machines (SVM) methods](https://www.sciencedirect.com/science/article/abs/pii/S0360835220304125)
+
+The article explores demand forecasting in the retail apparel industry, specifically focusing on the impact of including color details in predictive models. The study aims to improve sales forecasting accuracy by utilizing artificial intelligence (AI) techniques, such as artificial neural networks (ANN) and support vector machines (SVM). These models are used to predict sales while considering various factors like weather, gender, special days, and, notably, color details of products.
+
+The importance of demand forecasting is highlighted due to its significant impact on a company's success. Inaccurate predictions can lead to reduced sales, loss of reputation, and income. Traditional forecasting methods often require complete data, while AI systems can handle missing data and process large datasets more effectively.
+
+The study conducts demand forecasting using ANN and SVM models across different datasets involving nine products separately and one combined dataset. It compares the models' performance by considering the root mean square error (RMSE). The results indicate that ANN outperformed SVM in seven out of ten datasets without color details, while their performances were similar for datasets including color details.
+
+Additionally, the article provides theoretical information about ANN and SVM. Practical applications of these models using R programming language on sales data from a textile retailer are discussed. The conclusion highlights the growing significance of accurate demand forecasting in shaping business strategies, especially in an industry characterized by rapid changes in customer demand.
+
+$~$
+
+#### References:
+
+1. Sahin, Yusuf & Duman, Ekrem. (2011). Detecting Credit Card Fraud by Decision Trees and Support Vector Machines. IMECS 2011 - International MultiConference of Engineers and Computer Scientists 2011. 1. 442-447. 
+
+2. Shah, D., & Kumar Sharma, L. (2023). Credit Card Fraud Detection using Decision Tree and Random Forest. ITM Web of Conferences, 53, 2012-. https://doi.org/10.1051/itmconf/20235302012
+
+3. İlker Güven, Fuat Şimşir, Demand forecasting with color parameter in retail apparel industry using artificial neural networks (ANN) and support vector machines (SVM) methods, Computers & Industrial Engineering, Volume 147,2020,106678,ISSN 0360-8352,https://doi.org/10.1016/j.cie.2020.106678.
+(https://www.sciencedirect.com/science/article/pii/S0360835220304125)
+
+
