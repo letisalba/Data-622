@@ -3,12 +3,12 @@ title: "Data 622 - Homework 3"
 author: "Leticia Salazar"
 date: "December 3, 2023"
 output: 
-  html_document:
-    theme: sandstone
-    highlight: haddock
   pdf_document:
     latex_engine: xelatex
     dev: cairo_pdf
+  html_document:
+    theme: sandstone
+    highlight: haddock
 ---
 
 ```{r setup, include=FALSE}
