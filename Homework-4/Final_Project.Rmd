@@ -1,0 +1,308 @@
+---
+title: "Data 622 - Homework 4"
+author: "Leticia Salazar"
+date: "December 17, 2023"
+output: 
+  html_document:
+    theme: sandstone
+    highlight: haddock
+  pdf_document:
+    latex_engine: xelatex
+    dev: cairo_pdf
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+$~$
+
+Assignment:
+
+* Choose a dataset
+* You get to decide which dataset you want to work on. The data set must be different from the ones used in previous homeworks You can work on a problem from your job, or something you are interested in. You may also obtain a dataset from sites such as Kaggle, Data.Gov, Census Bureau, USGS or other open data portals. 
+* Select one of the methodologies studied in weeks 1-10, and another methodology from weeks 11-15 to apply in the new dataset selected.
+
+$~$
+
+To complete this task:
+
+* Describe the problem you are trying to solve.
+* Describe your datases and what you did to prepare the data for analysis. 
+* Methodologies you used for analyzing the data
+* What's the purpose of the analysis performed
+* Make your conclusions from your analysis. Please be sure to address the business impact (it could be of any domain) of your solution.
+
+$~$
+
+Deliverable:
+
+* Your final presentation (essay or video) should include:
+* The traditional R file or Python file and essay,
+* An Essay (minimum 500 word document) or Video ( 5 to 8 minutes recording)
+* Include the execution and explanation of your code. The video can be recorded on any platform of your choice (Youtube, Free Cam).
+Due Date: Sunday December 17, end of day
+
+----------------------------------------------------------------------------
+
+### The Problem:
+
+Cardiotocography (CTG) is a monitoring technique used during pregnancy to assess the well-being of the fetus. It involves simultaneous monitoring of two important parameters, Fetal Heart Rate (FHR) and Uterine Contractions. The primary goal of CTG monitoring is to assess the fetal heart rate patterns and uterine contractions to ensure that the fetus is receiving adequate oxygen and is not in distress. CTG helps healthcare professionals detect any signs of fetal distress or abnormalities in the heart rate pattern, which may require further investigation or intervention. CTG is commonly used during labor to continuously monitor the fetal heart rate and contractions to ensure the safety and well-being of the baby during the birthing process. CTG monitoring plays a crucial role in obstetrics and prenatal care. It helps healthcare providers in making informed decisions regarding the management of labor, identifying fetal distress, and determining the need for interventions such as cesarean sections or other medical treatments to ensure the safety and well-being of both the mother and the baby. In this project I will develop a predictive model to classify the fetal health status (Normal, Suspect, Pathological) based on the CTG exam measurements.
+
+
+$~$
+
+### The Data:
+
+The Fetal Health Classification dataset, available on [Kaggle.com](https://www.kaggle.com/datasets/andrewmvd/fetal-health-classification/data), comprises various cardiotocogram (CTG) exam measurements used to monitor fetal health during pregnancy. This dataset is aimed at predicting the health status of a fetus based on features obtained from CTG exams. The dataset contains 21 features derived from CTG exams and a target variable indicating the fetal health status. These features include quantitative measurements obtained from CTG exams, such as baseline fetal heart rate, accelerations, decelerations, uterine contractions, and various other parameters related to fetal health monitoring. 
+
+The target variable represents the fetal health status, which is classified into three categories:
+
+* Normal: Indicates a normal or healthy fetal condition.
+* Suspect: Suggests a potential concern or suspicion regarding fetal health.
+* Pathological: Indicates a pathological or concerning fetal health condition.
+
+
+Full description of the variables below:
+
+<table>
+<center>
+
+Variable                    Description
+-------------               ----------------
+baseline.value	            Fetal heart rate (FHR) baseline (beats per minute)
+accelerations	              # of accelerations per second
+fetal_movement	            # of fetal movements per second
+uterine_contractions	      # of uterine contractions per second
+light_decelerations	        # of light decelerations per second
+severe_decelerations	      # of severe decelerations per second
+prolonged_decelerations	    # of prolonged decelerations per second
+abnormal_short_var	        % of time with abnormal short term variability
+mean_short_var	            Mean value of short term variability
+perc_time_long_var	        % of time with abnormal long term variability
+mean_long_var	              Mean value of long term variability
+histogram_width	            Width of FHR histogram
+histogram_min	              Minimum (low frequency) of FHR histogram
+histogram_max	              Maximum (high frequency) of FHR histogram
+histogram_peaks	            # of histogram peaks
+histogram_zeroes	          # of histogram zeroes
+histogram_mode	            Histogram mode
+histogram_mean	            Histogram mean
+histogram_median	          Histogram median
+histogram_variance	        Histogram variance
+histogram_tendency	        Histogram tendency
+fetal_health	              1 (Normal), 2 (Suspect), 3 (Pathological) - TARGET
+
+</center>
+</table>
+
+
+$~$
+
+### Methodology:
+
+Cleanse the dataset, handle missing values (if any), encode categorical variables, and normalize/standardize numerical features as necessary. Divide the dataset into training and testing sets to train the models and evaluate their performance. For the model building I will utilize a decision tree algorithm to create a classification model that learns patterns in the dataset's features (like fetal heart rate, uterine contractions, etc.) to predict the fetal health status. Implement a neural network architecture, to train a model that can learn complex patterns and relationships within the dataset to classify the fetal health status accurately.
+
+* For Decision Tree: Use the decision tree algorithm available in R (e.g., using libraries like rpart or tree) to create the classification model.
+* For Neural Networks: Use R libraries such as keras, neuralnet, or tensorflow to build and train a neural network model.
+
+Evaluate the models using appropriate evaluation metrics (such as accuracy, precision, recall, F1-score) on the test dataset to assess their performance. Fine-tune the models by adjusting hyperparameters (like tree depth, learning rate, number of layers/neurons) to optimize their performance. Compare the performance of the decision tree and neural network models to determine which one performs better in classifying fetal health status. Finally, use the best-performing model to make predictions on new or unseen data.
+
+$~$
+
+
+#### Load Libraries:
+
+The following libraries were utilized in this assignment:
+```{r, warning=FALSE, message=FALSE, cache=FALSE, comment=FALSE}
+# load libraries
+library(tidyverse) # data prep
+library(skimr) # data prep
+library(rpart) # decision tree package
+library(rpart.plot) # decision tree display package
+library(kableExtra)
+library(knitr) # kable function for table
+library(formattable)
+library(tidyr) # splitting data
+library(ggplot2) # graphing
+library(hrbrthemes) # chart customization
+library(viridis) # ggplot2 formating for boxplot
+library(gridExtra) # layering charts
+library(stringr) # data prep
+library(tidymodels) # predictions
+library(corrplot) # correlation plot
+library(caret) # confusion matrix
+library(neuralnet) # neural network
+```
+
+$~$
+
+
+#### Load Data:
+
+The dataset selected for this culminating project is sourced from [Kaggle.com](https://www.kaggle.com/datasets/andrewmvd/fetal-health-classification/data) titled Fetal Health Classification. It has been incorporated into my [GitHub repository](https://github.com/letisalba/Data-622/tree/master/Homework-4) and imported into R.
+```{r, echo=FALSE}
+# load the dataset from github
+fetal_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-4/csv/fetal_health.csv")
+#head(fetal_df)
+```
+
+```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
+# display the dataset
+fetal_df %>% 
+kable(format = "html", col.names = colnames(fetal_df)) %>%
+  kable_styling() %>%
+  kableExtra::scroll_box(width = "100%", height = "400px")
+```
+
+
+$~$
+
+### Data Exploration
+
+Using the `skimr` library we can obtain a quick summary statistic of the dataset. This dataset contains 2126 values and 22 variables including the Target variable. They are all numeric and seems to have no missing variables.
+
+```{r, echo=FALSE}
+# summary of the dataset
+skim(fetal_df)
+```
+
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
+# Histograms
+p1 <- wine_df %>% 
+ggplot( aes(x=fixed.acidity)) +
+    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
+    ggtitle("Fixed Acidity") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+```
+
+```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
+# Boxplots
+p2 <- data %>%
+  ggplot( aes(x=name, y=value, fill=name)) +
+    geom_boxplot() +
+    scale_fill_viridis(discrete = TRUE, alpha=0.6) +
+    geom_jitter(color="black", size=0.4, alpha=0.9) +
+    theme_ipsum() +
+    theme(
+      legend.position="none",
+      plot.title = element_text(size=11)
+    ) +
+    ggtitle("A boxplot with jitter") +
+    xlab("")
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+
+$~$
+
+### Data Preparation
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+$~$
+
+### Model Building:
+
+$~$
+
+#### Decision Tree
+
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+
+$~$
+
+#### Neural Networks
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+$~$
+
+### Model Comparisson
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+```{r, echo=FALSE}
+
+```
+
+$~$
+
+
+### Conclusion:
+
+
+
+$~$
+
+#### References:
+
+
+$~$
+
+### Appendix
+
+```{r, echo=FALSE}
+
+```
