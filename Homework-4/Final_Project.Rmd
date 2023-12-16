@@ -43,11 +43,11 @@ Deliverable:
 * Include the execution and explanation of your code. The video can be recorded on any platform of your choice (Youtube, Free Cam).
 Due Date: Sunday December 17, end of day
 
-----------------------------------------------------------------------------
+----------------------------------------------------------------------
 
 ### The Problem:
 
-Cardiotocography (CTG) is a monitoring technique used during pregnancy to assess the well-being of the fetus. It involves simultaneous monitoring of two important parameters, Fetal Heart Rate (FHR) and Uterine Contractions. The primary goal of CTG monitoring is to assess the fetal heart rate patterns and uterine contractions to ensure that the fetus is receiving adequate oxygen and is not in distress. CTG helps healthcare professionals detect any signs of fetal distress or abnormalities in the heart rate pattern, which may require further investigation or intervention. CTG is commonly used during labor to continuously monitor the fetal heart rate and contractions to ensure the safety and well-being of the baby during the birthing process. CTG monitoring plays a crucial role in obstetrics and prenatal care. It helps healthcare providers in making informed decisions regarding the management of labor, identifying fetal distress, and determining the need for interventions such as cesarean sections or other medical treatments to ensure the safety and well-being of both the mother and the baby. In this project I will develop a predictive model to classify the fetal health status (Normal, Suspect, Pathological) based on the CTG exam measurements.
+Cardiotocography (CTG) is a monitoring technique used during pregnancy to assess the well-being of the fetus. It involves simultaneous monitoring of two important parameters, Fetal Heart Rate (FHR) and Uterine Contractions. The primary goal of CTG monitoring is to assess the fetal heart rate patterns and uterine contractions to ensure that the fetus is receiving adequate oxygen and is not in distress. CTG helps healthcare professionals detect any signs of fetal distress or abnormalities in the heart rate pattern, which may require further investigation or intervention. CTG is commonly used during labor to continuously monitor the fetal heart rate and contractions to ensure the safety and well-being of the baby during the birthing process. CTG monitoring plays a crucial role in obstetrics and prenatal care. It helps healthcare providers in making informed decisions regarding the management of labor, identifying fetal distress, and determining the need for interventions such as cesarean sections or other medical treatments to ensure the safety and well-being of both the mother and the baby. In this project I will develop two predictive models (Decision Tree and Neural Networks) to classify the fetal health status (Normal, Suspect, Pathological) based on the CTG exam measurements.
 
 
 $~$
@@ -58,44 +58,44 @@ The Fetal Health Classification dataset, available on [Kaggle.com](https://www.k
 
 The target variable represents the fetal health status, which is classified into three categories:
 
-* Normal: Indicates a normal or healthy fetal condition.
-* Suspect: Suggests a potential concern or suspicion regarding fetal health.
-* Pathological: Indicates a pathological or concerning fetal health condition.
+* *Normal: Indicates a normal or healthy fetal condition.*
+* *Suspect: Suggests a potential concern or suspicion regarding fetal health.*
+* *Pathological: Indicates a pathological or concerning fetal health condition.*
 
+$~$
 
 Full description of the variables below:
 
 <table>
 <center>
 
-Variable                    Description
--------------               ----------------
-baseline.value	            Fetal heart rate (FHR) baseline (beats per minute)
-accelerations	              # of accelerations per second
-fetal_movement	            # of fetal movements per second
-uterine_contractions	      # of uterine contractions per second
-light_decelerations	        # of light decelerations per second
-severe_decelerations	      # of severe decelerations per second
-prolonged_decelerations	    # of prolonged decelerations per second
-abnormal_short_var	        % of time with abnormal short term variability
-mean_short_var	            Mean value of short term variability
-perc_time_long_var	        % of time with abnormal long term variability
-mean_long_var	              Mean value of long term variability
-histogram_width	            Width of FHR histogram
-histogram_min	              Minimum (low frequency) of FHR histogram
-histogram_max	              Maximum (high frequency) of FHR histogram
-histogram_peaks	            # of histogram peaks
-histogram_zeroes	          # of histogram zeroes
-histogram_mode	            Histogram mode
-histogram_mean	            Histogram mean
-histogram_median	          Histogram median
-histogram_variance	        Histogram variance
-histogram_tendency	        Histogram tendency
-fetal_health	              1 (Normal), 2 (Suspect), 3 (Pathological) - TARGET
+Variable                                                        Description
+-------------                                                   ----------------
+baseline.value [LB]	                                            Fetal heart rate (FHR) baseline (beats per minute)
+accelerations [AC]	                                            # of accelerations per second
+fetal_movement [FM]	                                            # of fetal movements per second
+uterine_contractions [UC]	                                      # of uterine contractions per second
+light_decelerations [DL]	                                      # of light decelerations per second
+severe_decelerations [DS]	                                      # of severe decelerations per second
+prolongued_decelerations [DP]	                                  # of prolonged decelerations per second
+abnormal_short_term_variability [ASTV]	                        % of time with abnormal short term variability
+mean_value_of_short_term_variability [MSTV]	                    Mean value of short term variability
+percentage_of_time_with_abnormal_long_term_variability [ALTV]	  % of time with abnormal long term variability
+mean_value_of_long_term_variability [MLTV]	                    Mean value of long term variability
+histogram_width [Hist_width]                                    Width of FHR histogram
+histogram_min [Hist_min]	                                      Minimum (low frequency) of FHR histogram
+histogram_max [Hist_max]	                                      Maximum (high frequency) of FHR histogram
+histogram_number_of_peaks [Nmax]	                              # of histogram peaks
+histogram_number_of_zeroes [Nzeroes]	                          # of histogram zeroes
+histogram_mode [Hist_mode]	                                    Histogram mode
+histogram_mean [Hist_mean]	                                    Histogram mean
+histogram_median [Hist_median]	                                Histogram median
+histogram_variance [Hist_var]	                                  Histogram variance
+histogram_tendency [Hist_tendency]	                            Histogram tendency
+fetal_health [NSP]	                                            1 (Normal), 2 (Suspect), 3 (Pathological) - TARGET
 
 </center>
 </table>
-
 
 $~$
 
@@ -106,10 +106,10 @@ Cleanse the dataset, handle missing values (if any), encode categorical variable
 * For Decision Tree: Use the decision tree algorithm available in R (e.g., using libraries like rpart or tree) to create the classification model.
 * For Neural Networks: Use R libraries such as keras, neuralnet, or tensorflow to build and train a neural network model.
 
-Evaluate the models using appropriate evaluation metrics (such as accuracy, precision, recall, F1-score) on the test dataset to assess their performance. Fine-tune the models by adjusting hyperparameters (like tree depth, learning rate, number of layers/neurons) to optimize their performance. Compare the performance of the decision tree and neural network models to determine which one performs better in classifying fetal health status. Finally, use the best-performing model to make predictions on new or unseen data.
+Evaluate the models using appropriate evaluation metrics (such as accuracy, precision, recall, F1-score) on the test dataset to assess their performance. Fine-tune the models by adjusting hyperparameters (like tree depth, learning rate, number of layers/neurons) to optimize their performance. Compare the performance of the decision tree and neural network models to determine which one performs best in classifying fetal health status. Finally, use the best-performing model to make predictions on new or unseen data.
 
 $~$
-
+----------------------------------------------------------------------
 
 #### Load Libraries:
 
@@ -124,6 +124,7 @@ library(kableExtra)
 library(knitr) # kable function for table
 library(formattable)
 library(tidyr) # splitting data
+library(dplyr) # used in filtering outliers
 library(ggplot2) # graphing
 library(hrbrthemes) # chart customization
 library(viridis) # ggplot2 formating for boxplot
@@ -137,14 +138,35 @@ library(neuralnet) # neural network
 
 $~$
 
-
 #### Load Data:
 
-The dataset selected for this culminating project is sourced from [Kaggle.com](https://www.kaggle.com/datasets/andrewmvd/fetal-health-classification/data) titled Fetal Health Classification. It has been incorporated into my [GitHub repository](https://github.com/letisalba/Data-622/tree/master/Homework-4) and imported into R.
+The dataset selected has been incorporated into my [GitHub repository](https://github.com/letisalba/Data-622/tree/master/Homework-4) and imported into R.
+
 ```{r, echo=FALSE}
 # load the dataset from github
 fetal_df <- read.csv("https://raw.githubusercontent.com/letisalba/Data-622/master/Homework-4/csv/fetal_health.csv")
-#head(fetal_df)
+fetal_df <- fetal_df %>% rename(Baseline_Value = 'baseline.value',
+                                AC = "accelerations",
+                                FM = "fetal_movement",
+                                UC = "uterine_contractions", 
+                                DL = "light_decelerations",
+                                DS = "severe_decelerations",
+                                DP = "prolongued_decelerations",
+                                ASTV = "abnormal_short_term_variability",
+                                MSTV = "mean_value_of_short_term_variability",
+                                ALTV = "percentage_of_time_with_abnormal_long_term_variability",
+                                MLTV = "mean_value_of_long_term_variability",
+                                Hist_width = "histogram_width",
+                                Hist_min = "histogram_min",
+                                Hist_max = "histogram_max",
+                                Nmax = "histogram_number_of_peaks",
+                                Nzeroes = "histogram_number_of_zeroes",
+                                Hist_mode = "histogram_mode",
+                                Hist_mean = "histogram_mean",
+                                Hist_median = "histogram_median",
+                                Hist_var = "histogram_variance",
+                                Hist_tendency = "histogram_tendency",
+                                Fetal_Health = "fetal_health")                                    
 ```
 
 ```{r, echo=FALSE, kable.opts=list(caption="data frame is now printed using `kable`.")}
@@ -154,7 +176,6 @@ kable(format = "html", col.names = colnames(fetal_df)) %>%
   kable_styling() %>%
   kableExtra::scroll_box(width = "100%", height = "400px")
 ```
-
 
 $~$
 
@@ -167,59 +188,329 @@ Using the `skimr` library we can obtain a quick summary statistic of the dataset
 skim(fetal_df)
 ```
 
+$~$
+
+Upon examining the variable distributions, our initial observation highlights that several variables adhere to a normal distribution. These variables comprise `Baseline Value`, `Width of FHR Histogram,` and `Histogram Median`.
+
+Additional noteworthy points:
+
+* The 'Normal' (1) classification in `Fetal Health` exhibits the highest frequency.
+* Right-skewed distributions are apparent in `Accelerations [AC]`, `Light Decelerations [DL]`, `Mean Short Variability [MSTV]`, `Percentage of time with Abnormal Long Term Variability [ALTV]`, and `Hist_var`.
+* Bimodal distributions manifest in `Abnormal Short Variability [ASTV]`, `Hist_width`, and `Hist_min`.
+* There's a presumption of the presence of outliers in the variables `Fetal Movement [FM]`, `Severe Decelerations [DS]`, `Prolongued Decelerations [DP]`, and `No. of Histogram Zeroes [Nzeroes]`.
+
 ```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
-# Histograms
-p1 <- wine_df %>% 
-ggplot( aes(x=fixed.acidity)) +
-    geom_histogram(fill="#69b3a2", color="#e9ecef", alpha=0.8) +
-    ggtitle("Fixed Acidity") +
+
+# Histogram for fetal_health
+p1 <- fetal_df %>%
+ggplot( aes(x=Fetal_Health)) +
+    geom_histogram(fill="#1C315E", color="#e9ecef", alpha=0.8) +
+    ggtitle("Fetal Health") +
     theme_ipsum() +
     theme(
       plot.title = element_text(size=15)
     )
+
+# Histogram for baseline.value
+p2 <- fetal_df %>%
+ggplot( aes(x=Baseline_Value)) +
+    geom_histogram(fill="#227C70", color="#e9ecef", alpha=0.8) +
+    ggtitle("Baseline Value") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for accelerations
+p3 <- fetal_df %>%
+ggplot( aes(x=AC)) +
+    geom_histogram(fill="#808000", color="#e9ecef", alpha=0.8) +
+    ggtitle("Accelerations") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for fetal_movement
+p4 <- fetal_df %>%
+ggplot( aes(x=FM)) +
+    geom_histogram(fill="#88A47C", color="#e9ecef", alpha=0.8) +
+    ggtitle("Fetal Movement") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+# Histogram for uterine_contractions
+p5 <- fetal_df %>%
+ggplot( aes(x=UC)) +
+    geom_histogram(fill="#495579", color="#e9ecef", alpha=0.8) +
+    ggtitle("Uterine Contractions") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for light_decelerations
+p6 <- fetal_df %>%
+ggplot( aes(x=DL)) +
+    geom_histogram(fill="#8B7E74", color="#e9ecef", alpha=0.8) +
+    ggtitle("Light Decelerations") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for severe_decelerations
+p7 <- fetal_df %>%
+ggplot( aes(x=DS)) +
+    geom_histogram(fill="#C7BCA1", color="#e9ecef", alpha=0.8) +
+    ggtitle("Severe Decelerations") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for prolongued_decelerations
+p8 <- fetal_df %>%
+ggplot( aes(x=DP)) +
+    geom_histogram(fill="#EB6440", color="#e9ecef", alpha=0.8) +
+    ggtitle("Prolongued Decelerations") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for abnormal_short_var
+p9 <- fetal_df %>%
+ggplot( aes(x=ASTV)) +
+    geom_histogram(fill="#E8AA42", color="#e9ecef", alpha=0.8) +
+    ggtitle("Abnormal Short Variability") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for mean_value_of_short_term_variability
+p10 <- fetal_df %>%
+ggplot( aes(x=MSTV)) +
+    geom_histogram(fill="#9B3675", color="#e9ecef", alpha=0.8) +
+    ggtitle("Mean Short Variability") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for percentage_of_time_with_abnormal_long_term_variability
+p11 <- fetal_df %>%
+ggplot( aes(x=ALTV)) +
+    geom_histogram(fill="#6E7C7C", color="#e9ecef", alpha=0.8) +
+    ggtitle("Percentage of time with Abnormal Long Term Variability") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=12)
+    )
+
+# Histogram for mean_value_of_long_term_variability
+p12 <- fetal_df %>%
+ggplot( aes(x=MLTV)) +
+    geom_histogram(fill="#495579", color="#e9ecef", alpha=0.8) +
+    ggtitle("Mean Long Variability") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# displaying the histograms
+par(mfrow = c(3, 4))
+grid.arrange(p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12)
 ```
 
 ```{r, fig.height=12, fig.width=12, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
-# Boxplots
-p2 <- data %>%
-  ggplot( aes(x=name, y=value, fill=name)) +
-    geom_boxplot() +
-    scale_fill_viridis(discrete = TRUE, alpha=0.6) +
-    geom_jitter(color="black", size=0.4, alpha=0.9) +
+
+# Histogram for histogram_width
+p13 <- fetal_df %>%
+ggplot( aes(x=Hist_width)) +
+    geom_histogram(fill="#795548", color="#e9ecef", alpha=0.8) +
+    ggtitle("Width of FHR Histogram") +
     theme_ipsum() +
     theme(
-      legend.position="none",
-      plot.title = element_text(size=11)
-    ) +
-    ggtitle("A boxplot with jitter") +
-    xlab("")
+      plot.title = element_text(size=15)
+    )
 
+# Histogram for histogram_min
+p14 <- fetal_df %>%
+ggplot( aes(x=Hist_min)) +
+    geom_histogram(fill="#607D8B", color="#e9ecef", alpha=0.8) +
+    ggtitle("Minimum of FHR Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_max
+p15 <- fetal_df %>%
+ggplot( aes(x=Hist_max)) +
+    geom_histogram(fill="#92967D", color="#e9ecef", alpha=0.8) +
+    ggtitle("Maximum of FHR Histogram") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_number_of_peaks
+p16 <- fetal_df %>%
+ggplot( aes(x=Nmax)) +
+    geom_histogram(fill="#a86800", color="#e9ecef", alpha=0.8) +
+    ggtitle("No. of Histogram Peaks") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_number_of_zeroes
+p17 <- fetal_df %>%
+ggplot( aes(x=Nzeroes)) +
+    geom_histogram(fill="#D0CECE", color="#e9ecef", alpha=0.8) +
+    ggtitle("No. of Histogram Zeroes") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_modes
+p18 <- fetal_df %>%
+ggplot( aes(x=Hist_mode)) +
+    geom_histogram(fill="#937070", color="#e9ecef", alpha=0.8) +
+    ggtitle("Histogram Mode") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_mean
+p19 <- fetal_df %>%
+ggplot( aes(x=Hist_mean)) +
+    geom_histogram(fill="#aaad97", color="#e9ecef", alpha=0.8) +
+    ggtitle("Histogram Mean") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_median
+p20 <- fetal_df %>%
+ggplot( aes(x=Hist_median)) +
+    geom_histogram(fill="#7e102c", color="#e9ecef", alpha=0.8) +
+    ggtitle("Histogram Median") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_variance
+p21 <- fetal_df %>%
+ggplot( aes(x=Hist_var)) +
+    geom_histogram(fill="#e1d3cc", color="#e9ecef", alpha=0.8) +
+    ggtitle("Histogram Variance") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# Histogram for histogram_tendency
+p22 <- fetal_df %>%
+ggplot( aes(x=Hist_tendency)) +
+    geom_histogram(fill="#767468", color="#e9ecef", alpha=0.8) +
+    ggtitle("Histogram Tendency") +
+    theme_ipsum() +
+    theme(
+      plot.title = element_text(size=15)
+    )
+
+# displaying the histograms
+par(mfrow = c(3, 4))
+grid.arrange(p13,p14,p15,p16,p17,p18,p19,p20,p21,p22)
 ```
 
-```{r, echo=FALSE}
+$~$
 
+We'll utilize boxplots to identify outliers across the complete dataset. Confirming my initial presumption, I can affirm the presence of outliers not only in the variables initially suspected but also in 16 out of 22 variables. Managing outliers in a dataset stands as a crucial phase in data preparation due to their potential substantial influence on statistical analyses and model building.
+
+```{r, fig.height=18, fig.width=10, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
+
+# boxplot of variables
+fetal_df2 <- fetal_df %>% 
+                gather(variable, values, 1:dim(fetal_df)[2])
+fetal_df2 %>% 
+  ggplot() +
+  geom_boxplot(aes(x = variable, y = values)) +
+  facet_wrap(~variable, ncol = 4, scales = "free") +
+  theme_ipsum() +
+    theme(
+      plot.title = element_text(size=6)
+    )
 ```
 
+$~$
+
+A correlation plot displays the relationships and strengths of associations between variables in a dataset. The plot includes numeric variables related to fetal health indicators such as fetal heart rate, uterine contractions, and fetal movement. The correlation coefficients range from -1 to +1, where positive correlations are represented by warmer colors (e.g., red) and negative correlations by cooler colors (e.g., blue).
+
+The plot revealed a strong positive correlation between `Nmax` and `Hist_width` as well as `Hist_max` and `Hist_width`, the FHR histogram might depict the distribution of fetal heart rates observed during a particular time frame, such as during labor or specific intervals of monitoring. A wider FHR histogram might suggest a greater variation or fluctuation in fetal heart rates during the monitored period. In certain cases, specific widths in the FHR histogram might correlate with certain health conditions or provide insights into the fetal well-being. For instance, increased variability can sometimes be a sign of a healthy, responsive fetus. The plot also reveals a strong negative correlation between `Hist_min` and `Hist_width` and an odd strong positive correlation between `Hist_mode`, `Hist_mean`, and `Hist_median`,
+
+The correlation plot has limitations as it only captures linear relationships and may not account for complex interactions between variables. Despite this, the insights gained from the plot below will help guide my feature selection process for developing a predictive model for fetal health classification. 
+
+```{r, fig.height=10, fig.width=10, warning=FALSE, echo=FALSE, message=FALSE}
+
+# # Correlation matrix
+cor_matrix <- cor(fetal_df[, -ncol(fetal_df)])
+
+# Visualize the correlation matrix using corrplot
+corrplot(cor_matrix, method = "color", tl.col = "black")
+```
 
 $~$
 
 ### Data Preparation
 
-```{r, echo=FALSE}
+The highest priority for data preparation is addressing the outliers in order to have a better accuracy when creating models. For this, I seperated the target and the predictor variables to perform a "Winsorization" process on the dataframe predictors. Winsorization involves capping/extending extreme values by replacing them with a predefined percentile value (5th percentile for lower values and 95th percentile for higher values) to reduce the influence of outliers while preserving the distribution of the data. The resultant dataset, predictors_cleaned, comprises these modified values, combined with the original target variable 'Fetal_Health' to form the reconstructed dataset.
 
-```
-
-```{r, echo=FALSE}
-
-```
 
 ```{r, echo=FALSE}
 
+# Separate the target variable
+target <- fetal_df$Fetal_Health
+predictors <- fetal_df[, -which(names(fetal_df) == "Fetal_Health")]
+
+# Apply outlier treatment to predictors
+# Example: Using Winsorization for outlier treatment
+
+predictors_cleaned <- predictors %>%
+  mutate_all(~ifelse(. < quantile(., 0.05), quantile(., 0.05),
+                     ifelse(. > quantile(., 0.95), quantile(., 0.95), .)))
+
+# Reconstruct the dataset with cleaned predictors and the original target variable
+fetal_df_cleaned <- cbind(predictors_cleaned, Fetal_Health = target)
+
+# Use 'data_cleaned' for model training while keeping the original target variable unchanged
 ```
 
-```{r, echo=FALSE}
+Let's now examine the impact of incorporating parameters for outliers in each variable through a boxplot. The initial observation reveals a notable decrease in outliers, particularly noticeable within the variables:  `FM`, `Hist_var`, `Nzeroes`, `MLTV`, `MSTV`, `ALTV`, and `DP`.
 
+```{r, fig.height=18, fig.width=10, warning=FALSE, echo=FALSE, message=FALSE, fig.align='center'}
+
+# boxplot of the variables with the outlier parameters
+fetal_df2 <- fetal_df_cleaned %>% 
+                gather(variable, values, 1:dim(fetal_df_cleaned)[2])
+fetal_df2 %>% 
+  ggplot() +
+  geom_boxplot(aes(x = variable, y = values)) +
+  facet_wrap(~variable, ncol = 4, scales = "free") +
+  theme_ipsum() +
+    theme(
+      plot.title = element_text(size=6)
+    )
 ```
+
 
 $~$
 
@@ -298,6 +589,9 @@ $~$
 
 #### References:
 
+* How to remove outliers from data in R - universe of Data Science. Universe of Data Science for the Future. (2022, March 4). https://universeofdatascience.com/how-to-remove-outliers-from-data-in-r/ 
+
+* Huang, L., Jiang, Z., Cai, R., Li, L., Chen, Q., Hong, J., Hao, Z., & Wei, H. (2021). Investigating the interpretability of fetal status assessment using antepartum cardiotocographic records. BMC medical informatics and decision making, 21(1), 355. https://doi.org/10.1186/s12911-021-01714-4
 
 $~$
 
